@@ -7,19 +7,19 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="com.mobdeve.s18.legitmessages.ui.home.HomeFragment"
+        android:name="com.mobdeve.s18.legitmessages.ui.profile.ProfileFragment"
         android:label="Legit Messages"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_contacts" />
 
     <fragment
         android:id="@+id/navigation_dashboard"
-        android:name="com.mobdeve.s18.legitmessages.ui.dashboard.DashboardFragment"
+        android:name="com.mobdeve.s18.legitmessages.ui.chats.ChatsFragment"
         android:label="Legit Messages"
-        tools:layout="@layout/fragment_dashboard" />
+        tools:layout="@layout/fragment_chats" />
 
     <fragment
         android:id="@+id/navigation_notifications"
-        android:name="com.mobdeve.s18.legitmessages.ui.notifications.NotificationsFragment"
+        android:name="com.mobdeve.s18.legitmessages.ui.settings.SettingsFragment"
         android:label="Legit Messages"
-        tools:layout="@layout/fragment_notifications" />
+        tools:layout="@layout/fragment_settings" />
 </navigation>
