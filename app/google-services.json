@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "874561335204",
+    "project_id": "mobdeve-project",
+    "storage_bucket": "mobdeve-project.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:874561335204:android:3a9f85646adbc0e52e9b31",
+        "android_client_info": {
+          "package_name": "com.mobdeve.s18.legitmessages"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "874561335204-c781kct70hjrpt7s5mss3kplemv2gr1t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBRS2Et9t_V53neiJT1dIGlQn0xjuU7WDc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "874561335204-c781kct70hjrpt7s5mss3kplemv2gr1t.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
