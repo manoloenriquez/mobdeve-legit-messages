@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="com.mobdeve.s18.legitmessages.ui.profile.ProfileFragment"
+        android:name="com.mobdeve.s18.legitmessages.ui.contacts.ContactsFragment"
         android:label="Legit Messages"
         tools:layout="@layout/fragment_contacts" />
 
