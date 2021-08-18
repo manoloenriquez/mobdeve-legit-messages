@@ -10,13 +10,11 @@ class DataHelper {
     fun initList(): ArrayList<User> {
         dataList.add(User("jolonarvaez",
                         "Jolo",
-                        "Narvaez",
-                        "jolonarvaez@gmail.com"))
+                        "Narvaez",))
 
         dataList.add(User("manoloenriquez",
                         "Manolo",
-                        "Enriquez",
-                        "manoloenriquez@gmail.com"))
+                        "Enriquez",))
 
         return dataList
     }
