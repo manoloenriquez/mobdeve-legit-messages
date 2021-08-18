@@ -1,6 +1,7 @@
 package com.mobdeve.s18.legitmessages.ui.login
 
 import android.app.Activity
+import android.content.Intent
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
@@ -12,6 +13,7 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.Toast
+import com.mobdeve.s18.legitmessages.MainActivity
 import com.mobdeve.s18.legitmessages.databinding.ActivityLoginBinding
 
 import com.mobdeve.s18.legitmessages.R
@@ -59,8 +61,9 @@ class LoginActivity : AppCompatActivity() {
             if (loginResult.success != null) {
                 updateUiWithUser(loginResult.success)
             }
+            val intent = Intent(this, MainActivity::class.java)
             setResult(Activity.RESULT_OK)
-
+            startActivity(intent)
             //Complete and destroy login activity once successful
             finish()
         })
