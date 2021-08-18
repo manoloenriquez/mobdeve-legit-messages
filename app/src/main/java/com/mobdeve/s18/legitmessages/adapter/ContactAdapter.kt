@@ -8,9 +8,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.mobdeve.s18.legitmessages.R
 import com.mobdeve.s18.legitmessages.model.User
 import android.widget.TextView
+import com.mobdeve.s18.legitmessages.ui.contacts.ContactsFragment
 
 
-class ContactAdapter(contactList: ArrayList<User>, context: Context):
+class ContactAdapter(contactList: List<User>):
     RecyclerView.Adapter<ContactAdapter.ContactViewHolder>() {
 
     private val contactArrayList: ArrayList<User> = ArrayList<User>()
@@ -20,10 +21,11 @@ class ContactAdapter(contactList: ArrayList<User>, context: Context):
         return contactArrayList.size
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContactAdapter.ContactViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContactViewHolder {
 
-        var view: View = LayoutInflater.from(parent.context)
+        val view = LayoutInflater.from(context)
                         .inflate(R.layout.contact_data, parent, false)
+
         return ContactViewHolder(view)
     }
 
