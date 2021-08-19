@@ -34,12 +34,12 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-//        if (auth.currentUser != null) {
-//            val intent = Intent(this, MainActivity::class.java)
-//            setResult(Activity.RESULT_OK)
-//            startActivity(intent)
-//            finish()
-//        }
+        if (auth.currentUser != null) {
+            val intent = Intent(this, MainActivity::class.java)
+            setResult(Activity.RESULT_OK)
+            startActivity(intent)
+            finish()
+        }
 
         val username = binding.username
         val password = binding.password
