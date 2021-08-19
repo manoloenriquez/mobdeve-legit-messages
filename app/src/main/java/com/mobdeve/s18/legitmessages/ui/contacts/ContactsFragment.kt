@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mobdeve.s18.legitmessages.databinding.FragmentContactsBinding
+import com.mobdeve.s18.legitmessages.model.User
+import com.mobdeve.s18.legitmessages.util.DataHelper
 
 class ContactsFragment : Fragment() {
 
@@ -17,23 +19,17 @@ class ContactsFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
 
-        var list = ArrayList<String>()
-        list.add("Jolo")
-        list.add("Manolo")
+
+        var dataHelper = DataHelper()
+        var contactList : ArrayList<User> = dataHelper.initList()
 
         binding = FragmentContactsBinding.inflate(layoutInflater)
-        contactAdapter = ContactAdapter(list)
+        contactAdapter = ContactAdapter(contactList)
         linearLayoutManager = LinearLayoutManager(activity)
 
         binding.rvContactList.adapter = contactAdapter
         binding.rvContactList.layoutManager = linearLayoutManager
 
-
         return binding.root
     }
-
-//    override fun onPause() {
-//        super.onPause()
-//        Log.i("DATA", contactList.toString())
-//    }
 }
