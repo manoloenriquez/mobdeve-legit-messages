@@ -33,7 +33,7 @@ class LoginViewModel(private val activity: LoginActivity) : ViewModel() {
                     user = User(auth.currentUser?.uid, auth.currentUser?.email, auth.currentUser?.displayName)
                     user!!.uid?.let { Log.i("Testing", it) }
                     _loginResult.value =
-                        LoginResult(success = user?.let { LoggedInUserView(displayName = it.displayName) })
+                        LoginResult(success = user)
                 } else {
                     Log.i("Testing", "Failed to login")
                     _loginResult.value = LoginResult(error = R.string.login_failed)
