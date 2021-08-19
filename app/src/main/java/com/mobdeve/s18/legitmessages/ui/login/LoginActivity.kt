@@ -65,13 +65,15 @@ class LoginActivity : AppCompatActivity() {
             }
             if (loginResult.success != null) {
                 updateUiWithUser(loginResult.success)
+                val intent = Intent(this, MainActivity::class.java)
+                setResult(Activity.RESULT_OK)
+                startActivity(intent)
+                finish()
             }
-            val intent = Intent(this, MainActivity::class.java)
-            setResult(Activity.RESULT_OK)
-            startActivity(intent)
+
             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
             //Complete and destroy login activity once successful
-            finish()
+
         })
 
         username.afterTextChanged {

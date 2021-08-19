@@ -25,25 +25,20 @@ class LoginViewModel(private val activity: LoginActivity) : ViewModel() {
 
     fun login(email: String, password: String) {
         // can be launched in a separate asynchronous job
-        var result = false
         var user: User? = null
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener(activity) { task ->
                 if (task.isSuccessful) {
                     Log.d(ContentValues.TAG, "sign in successful")
+                    user = User(auth.currentUser?.uid, auth.currentUser?.email, auth.currentUser?.displayName)
+                    user!!.uid?.let { Log.i("Testing", it) }
+                    _loginResult.value =
+                        LoginResult(success = user?.let { LoggedInUserView(displayName = it.displayName) })
+                } else {
+                    Log.i("Testing", "Failed to login")
+                    _loginResult.value = LoginResult(error = R.string.login_failed)
                 }
-                user = User(auth.currentUser?.uid, auth.currentUser?.email, auth.currentUser?.displayName)
-                result = true
-                user!!.uid?.let { Log.i("Testing", it) }
             }
-
-
-        if (result) {
-            _loginResult.value =
-                LoginResult(success = user?.let { LoggedInUserView(displayName = it.displayName) })
-        } else {
-            _loginResult.value = LoginResult(error = R.string.login_failed)
-        }
     }
 
     fun loginDataChanged(username: String, password: String) {
