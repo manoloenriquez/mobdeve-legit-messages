@@ -1,6 +1,6 @@
 package com.mobdeve.s18.legitmessages.model;
 
-class User (val uid: String?, val email: String?, displayName: String?){
+class User (val uid: String?, val email: String?, var displayName: String?){
     var username: String = ""
     var firstName: String = ""
     var lastName: String = ""
