@@ -102,35 +102,29 @@
             android:textColor="@color/black"/>
         <EditText
             android:id="@+id/password_input"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
-        <TextView
-            android:id="@+id/confirm_password_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Confirm Password"
-            android:layout_marginTop="10dp"
-            android:textColor="@color/black"/>
-        <EditText
-            android:id="@+id/confirm_password_input"
+            android:inputType="textPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
         <Button
-            android:layout_marginTop="20dp"
+            android:id="@+id/register_btn"
+            android:layout_marginTop="40dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Register"
             android:paddingVertical="10dp"
+            android:enabled="false"
             android:gravity="center_horizontal"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Already have an account?"
+            app:layout_constraintTop_toBottomOf="@id/form_input"
+            android:textAlignment="textEnd"
+            android:textColor="@color/black"/>
     </LinearLayout>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Already have an account?"
-        app:layout_constraintTop_toBottomOf="@id/form_input"
-        app:layout_constraintEnd_toEndOf="parent"/>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

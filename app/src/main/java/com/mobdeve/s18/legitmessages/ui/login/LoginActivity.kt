@@ -20,6 +20,7 @@ import com.mobdeve.s18.legitmessages.MainActivity
 import com.mobdeve.s18.legitmessages.databinding.ActivityLoginBinding
 
 import com.mobdeve.s18.legitmessages.R
+import com.mobdeve.s18.legitmessages.ui.register.RegisterActivity
 
 class LoginActivity : AppCompatActivity() {
 
@@ -68,6 +69,7 @@ class LoginActivity : AppCompatActivity() {
             val intent = Intent(this, MainActivity::class.java)
             setResult(Activity.RESULT_OK)
             startActivity(intent)
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
             //Complete and destroy login activity once successful
             finish()
         })
@@ -102,6 +104,12 @@ class LoginActivity : AppCompatActivity() {
                 loading.visibility = View.VISIBLE
                 loginViewModel.login(username.text.toString(), password.text.toString())
             }
+        }
+
+        binding.registerLink?.setOnClickListener {
+            val intent = Intent(this, RegisterActivity::class.java)
+            startActivity(intent)
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
         }
     }
 

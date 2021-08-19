@@ -5,7 +5,8 @@ import java.util.ArrayList
 
 class DataHelper {
 
-    val dataList = ArrayList<User>()
+    private val dataList = ArrayList<User>()
+    val sampleList = ArrayList<String>()
 
     fun initList(): ArrayList<User> {
         dataList.add(User("jolonarvaez",
@@ -18,6 +19,14 @@ class DataHelper {
 
         return dataList
     }
+
+    fun initSample(): ArrayList<String>{
+        sampleList.add("Jolo")
+        sampleList.add("Manolo")
+
+        return sampleList
+    }
+
 
 }
 

@@ -20,20 +20,18 @@ class ContactsFragment : Fragment() {
     private var contactList: ArrayList<User> = arrayListOf()
     private lateinit var contactViewModel: ContactViewModel
     private lateinit var contactAdapter: ContactAdapter
+    private lateinit var binding: FragmentContactsBinding
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
 
-        val binding: FragmentContactsBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_contacts,
-            container, false)
+        binding = FragmentContactsBinding.inflate(layoutInflater)
         contactList = dataHelper.initList()
-        contactAdapter = ContactAdapter(contactList)
+        contactAdapter = ContactAdapter()
         binding.rvContactList.layoutManager = LinearLayoutManager(requireActivity().applicationContext)
         binding.rvContactList.adapter = contactAdapter
-        binding.text.text = "Hello " + contactList.get(0).username
+
         return binding.root
-
-
     }
 
     override fun onPause() {
