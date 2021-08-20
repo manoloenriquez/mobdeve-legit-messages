@@ -6,4 +6,24 @@
     android:layout_height="match_parent"
     tools:context=".ui.chats.ChatActivity">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/contact_tool_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@color/power_blue"
+        app:titleTextColor="@color/white"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/chat_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="CHAT HEADER"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:textSize="23dp" />
+
+    </androidx.appcompat.widget.Toolbar>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

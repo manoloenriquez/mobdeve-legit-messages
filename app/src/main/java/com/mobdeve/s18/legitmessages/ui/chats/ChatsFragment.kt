@@ -12,6 +12,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mobdeve.s18.legitmessages.R
 import com.mobdeve.s18.legitmessages.databinding.FragmentChatsBinding
+import com.mobdeve.s18.legitmessages.model.User
+import com.mobdeve.s18.legitmessages.util.DataHelper
 
 class ChatsFragment : Fragment() {
 
@@ -22,11 +24,10 @@ class ChatsFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
 
-        var list = ArrayList<String>()
-        list.add("Jolo")
-        list.add("Manolo")
+        var dataHelper = DataHelper()
+        var chatList : ArrayList<User> = dataHelper.initList()
 
-        chatAdapter = ChatAdapter(list)
+        chatAdapter = ChatAdapter(chatList)
         binding = FragmentChatsBinding.inflate(layoutInflater)
         binding.chatsRvList.adapter = chatAdapter
         linearLayoutManager = LinearLayoutManager(activity)
