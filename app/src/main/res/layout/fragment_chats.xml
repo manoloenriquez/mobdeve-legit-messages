@@ -7,11 +7,30 @@
     tools:context=".ui.chats.ChatsFragment"
     >
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/chat_tool_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@color/power_blue"
+        app:titleTextColor="@color/white"
+        android:gravity="center">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="CHATS"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:textSize="23dp" />
+
+    </androidx.appcompat.widget.Toolbar>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@id/chat_tool_bar">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/chats_rv_list"
