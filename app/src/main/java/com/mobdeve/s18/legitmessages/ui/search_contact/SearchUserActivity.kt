@@ -47,8 +47,6 @@ class SearchUserActivity : Activity() {
             //update the context of adapter after finding matching users
                 contactAdapter = ContactAdapter(contactList)
                 binding.rvSearchContact.adapter = contactAdapter
-
-                Toast.makeText(applicationContext, binding.searchUserInput.text, Toast.LENGTH_SHORT).show()
         }
 
         override fun afterTextChanged(s: Editable?) {
