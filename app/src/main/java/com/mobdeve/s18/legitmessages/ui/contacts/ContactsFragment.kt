@@ -1,14 +1,20 @@
 package com.mobdeve.s18.legitmessages.ui.contacts
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import com.mobdeve.s18.legitmessages.databinding.FragmentContactsBinding
+import com.mobdeve.s18.legitmessages.model.Database
 import com.mobdeve.s18.legitmessages.model.User
 import com.mobdeve.s18.legitmessages.util.DataHelper
+import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers.Main
 
 class ContactsFragment : Fragment() {
 
@@ -18,17 +24,21 @@ class ContactsFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
-
+        val db = Database()
+        val currentUser = Firebase.auth.currentUser
+        binding = FragmentContactsBinding.inflate(layoutInflater)
 
         var dataHelper = DataHelper()
-        var contactList : ArrayList<User> = dataHelper.initList()
-
-        binding = FragmentContactsBinding.inflate(layoutInflater)
-        contactAdapter = ContactAdapter(contactList)
         linearLayoutManager = LinearLayoutManager(activity)
-
-        binding.rvContactList.adapter = contactAdapter
         binding.rvContactList.layoutManager = linearLayoutManager
+
+        CoroutineScope(Main).launch {
+            val contactList = currentUser?.let { db.getUserContacts(it.uid) }
+            contactAdapter = contactList?.let { ContactAdapter(it) }!!
+
+            binding.rvContactList.adapter = contactAdapter
+        }
+
 
         return binding.root
     }
