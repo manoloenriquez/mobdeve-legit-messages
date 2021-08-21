@@ -27,10 +27,10 @@ class ContactActivity : AppCompatActivity() {
 
             val intent = Intent(applicationContext, ChatActivity::class.java)
 
-            intent.putExtra("chat_username", intent.getStringExtra("username"))
-            intent.putExtra("chat_displayName", intent.getStringExtra("displayName"))
-            startActivity(intent)
-            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+//            intent.putExtra("chat_username", intent.getStringExtra("username"))
+//            intent.putExtra("chat_displayName", intent.getStringExtra("displayName"))
+//            startActivity(intent)
+//            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
         }
 
 

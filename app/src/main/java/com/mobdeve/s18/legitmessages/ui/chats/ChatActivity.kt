@@ -16,7 +16,7 @@ class ChatActivity : AppCompatActivity() {
         binding = ActivityChatBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        Toast.makeText(applicationContext, intent.getStringExtra("chat_username"), Toast.LENGTH_SHORT).show()
+        Toast.makeText(applicationContext, intent.getStringExtra("uid"), Toast.LENGTH_SHORT).show()
         binding.chatHeader.text = intent.getStringExtra("chat_displayName")
     }
 }

@@ -14,6 +14,7 @@ import com.mobdeve.s18.legitmessages.ui.contacts.ContactActivity
 class ChatAdapter(private val list: ArrayList<User>): RecyclerView.Adapter<ChatAdapter.ChatViewHolder>() {
 
     class ChatViewHolder(view: View): RecyclerView.ViewHolder(view){
+        lateinit var uid: String
         val username: TextView = view.findViewById(R.id.chat_username)
         val chatData: ImageView = view.findViewById(R.id.chatData)
         lateinit var chat_username: String
@@ -23,6 +24,7 @@ class ChatAdapter(private val list: ArrayList<User>): RecyclerView.Adapter<ChatA
                 val position: Int = adapterPosition
                 val intent = Intent(view.context, ChatActivity::class.java)
 
+                intent.putExtra("uid", uid)
                 intent.putExtra("chat_username", chat_username )
                 intent.putExtra("chat_displayName", username.text)
                 v.context.startActivity(intent)
@@ -41,6 +43,7 @@ class ChatAdapter(private val list: ArrayList<User>): RecyclerView.Adapter<ChatA
     override fun onBindViewHolder(holder: ChatAdapter.ChatViewHolder, position: Int) {
         holder.username.text = list[position].displayName
         holder.chat_username = list[position].username
+        holder.uid = list[position].uid.toString()
     }
 
     override fun getItemCount() = list.size

@@ -15,18 +15,21 @@ class ContactAdapter(private val list: ArrayList<User>): RecyclerView.Adapter<Co
 
     class ContactViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val username: TextView = view.findViewById(R.id.contact_username)
+        val displayName: TextView = view.findViewById(R.id.contact_display_name)
         val contactData: ImageView = view.findViewById(R.id.contactData)
-        lateinit var displayName: String
+
         lateinit var email: String
         lateinit var userName: String
+        lateinit var uid: String
 
         init {
             contactData.setOnClickListener { v: View ->
-                val position: Int = adapterPosition
+//                val position: Int = adapterPosition
                 val intent = Intent(view.context, ContactActivity::class.java)
 
-                intent.putExtra("username", userName)
-                intent.putExtra("displayName", displayName)
+                intent.putExtra("uid", username.text)
+                intent.putExtra("username", username.text)
+                intent.putExtra("displayName", displayName.text)
                 intent.putExtra("email", email)
 
                 v.context.startActivity(intent)
@@ -43,10 +46,10 @@ class ContactAdapter(private val list: ArrayList<User>): RecyclerView.Adapter<Co
     }
 
     override fun onBindViewHolder(holder: ContactViewHolder, position: Int) {
-        holder.username.text = list[position].displayName
-        holder.displayName = list[position].displayName.toString()
+        holder.username.text = list[position].username
+        holder.displayName.text = list[position].displayName
         holder.email = list[position].email.toString()
-        holder.userName = list[position].username.toString()
+        holder.uid = list[position].uid.toString()
     }
 
     override fun getItemCount() = list.size
