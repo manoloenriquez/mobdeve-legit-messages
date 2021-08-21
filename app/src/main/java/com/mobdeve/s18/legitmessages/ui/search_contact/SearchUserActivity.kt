@@ -4,6 +4,7 @@ import android.app.Activity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.widget.Toast
 import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
@@ -20,7 +21,7 @@ class SearchUserActivity : Activity() {
 
     private lateinit var contactAdapter: ContactAdapter
     private lateinit var binding: ActivitySearchUserBinding
-    private lateinit var text: TextWatcher
+    private val contactList = ArrayList<User>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,28 +29,29 @@ class SearchUserActivity : Activity() {
         binding = ActivitySearchUserBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val contactList = ArrayList<User>()
-
         contactAdapter = ContactAdapter(contactList)
         binding.rvSearchContact.adapter = contactAdapter
+        binding.searchUserInput.addTextChangedListener(text)
 
 
-        text = object: TextWatcher{
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+    }
 
-            }
+    private var text = object: TextWatcher {
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
 
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                //key up function for search bar to show matching contact usernames/displaynames
+        }
 
-                //update the context of adapter after finding matching users
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            //key up function for search bar to show matching contact usernames/displaynames
+
+            //update the context of adapter after finding matching users
                 contactAdapter = ContactAdapter(contactList)
                 binding.rvSearchContact.adapter = contactAdapter
-            }
 
-            override fun afterTextChanged(s: Editable?) {
+                Toast.makeText(applicationContext, binding.searchUserInput.text, Toast.LENGTH_SHORT).show()
+        }
 
-            }
+        override fun afterTextChanged(s: Editable?) {
 
         }
     }
