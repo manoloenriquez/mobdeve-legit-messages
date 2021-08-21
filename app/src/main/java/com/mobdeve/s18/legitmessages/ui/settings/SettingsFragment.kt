@@ -16,6 +16,7 @@ import com.google.firebase.ktx.Firebase
 import com.mobdeve.s18.legitmessages.MainActivity
 import com.mobdeve.s18.legitmessages.R
 import com.mobdeve.s18.legitmessages.databinding.FragmentSettingsBinding
+import com.mobdeve.s18.legitmessages.model.User
 import com.mobdeve.s18.legitmessages.ui.login.LoginActivity
 
 class SettingsFragment : Fragment() {
@@ -42,6 +43,10 @@ class SettingsFragment : Fragment() {
             val intent = Intent(it.context, LoginActivity::class.java)
             startActivity(intent)
         }
+
+        binding.firstName.setText(User.currentUser?.firstName)
+        binding.lastName.setText(User.currentUser?.lastName)
+        binding.username.setText(User.currentUser?.username)
 
 
         return binding.root

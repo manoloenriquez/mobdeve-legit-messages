@@ -27,4 +27,8 @@ class User (val uid: String?, val email: String?, var displayName: String?){
         this.username = username
     }
 
+    companion object {
+        var currentUser: User? = null
+    }
+
 }

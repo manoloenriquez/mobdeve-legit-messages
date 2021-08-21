@@ -76,4 +76,34 @@ class Database {
          Log.i("DatabaseUsers", "$users")
          return users
     }
+
+    suspend fun searchUser(key: String): ArrayList<User> {
+        val users = ArrayList<User>()
+
+        val result = db.collection("users")
+            .whereGreaterThanOrEqualTo("username", key)
+            .whereLessThanOrEqualTo("username", "${key}\uF7FF")
+            .get()
+            .await()
+
+        Log.i("Search", "${result.documents}")
+
+        result.documents.forEach { document ->
+            val data = document.data
+            val user = User(
+                document.id,
+                data?.get("email") as String?,
+                "${data?.get("firstName")} ${data?.get("lastName")}",
+                data?.get("firstName") as String,
+                data.get("lastName") as String,
+                data.get("username") as String
+            )
+
+            users.add(user)
+        }
+
+        Log.i("Search", "$users")
+
+        return users
+    }
 }

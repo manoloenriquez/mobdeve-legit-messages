@@ -9,6 +9,7 @@ import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
@@ -20,7 +21,12 @@ import com.mobdeve.s18.legitmessages.MainActivity
 import com.mobdeve.s18.legitmessages.databinding.ActivityLoginBinding
 
 import com.mobdeve.s18.legitmessages.R
+import com.mobdeve.s18.legitmessages.model.Database
+import com.mobdeve.s18.legitmessages.model.User
 import com.mobdeve.s18.legitmessages.ui.register.RegisterActivity
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.launch
 
 class LoginActivity : AppCompatActivity() {
 
@@ -34,7 +40,37 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        val db = Database()
+
         if (auth.currentUser != null) {
+//            User.currentUser = User(
+//                auth.currentUser!!.uid,
+//                auth.currentUser!!.email,
+//                auth.currentUser!!.displayName
+//            )
+//            val intent = Intent(this, MainActivity::class.java)
+//            setResult(Activity.RESULT_OK)
+//            startActivity(intent)
+//            finish()
+
+            CoroutineScope(Main).launch {
+                val userRef = db.getUser(auth.currentUser!!.uid)
+                val data = userRef.data
+
+                if (data != null) {
+                    User.currentUser = User(
+                        auth.currentUser!!.uid,
+                        auth.currentUser!!.email,
+                        auth.currentUser!!.displayName,
+                        data["firstName"] as String,
+                        data["lastName"] as String,
+                        data["username"] as String
+                    )
+                }
+
+                Log.i("Current User", "${User.currentUser}")
+            }
+
             val intent = Intent(this, MainActivity::class.java)
             setResult(Activity.RESULT_OK)
             startActivity(intent)
