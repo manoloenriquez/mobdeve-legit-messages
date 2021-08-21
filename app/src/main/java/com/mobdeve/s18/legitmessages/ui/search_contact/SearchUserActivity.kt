@@ -32,7 +32,7 @@ class SearchUserActivity : Activity() {
 
         contactAdapter = ContactAdapter(contactList)
         binding.rvSearchContact.adapter = contactAdapter
-        
+
 
         text = object: TextWatcher{
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -41,6 +41,10 @@ class SearchUserActivity : Activity() {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 //key up function for search bar to show matching contact usernames/displaynames
+
+                //update the context of adapter after finding matching users
+                contactAdapter = ContactAdapter(contactList)
+                binding.rvSearchContact.adapter = contactAdapter
             }
 
             override fun afterTextChanged(s: Editable?) {
