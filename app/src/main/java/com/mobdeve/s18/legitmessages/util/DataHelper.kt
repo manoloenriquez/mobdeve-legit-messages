@@ -5,21 +5,29 @@ import java.util.ArrayList
 
 class DataHelper {
 
-    val dataList = ArrayList<User>()
+    private val dataList = ArrayList<User>()
 
     fun initList(): ArrayList<User> {
-        dataList.add(User("jolonarvaez",
-                        "Jolo",
-                        "Narvaez",
-                        "jolonarvaez@gmail.com"))
+        dataList.add(User(
+            "1",
+            "jolonarvaez@gmail.com",
+            "Jolo Narvaez",
+        "Jolo",
+        "Narvaez",
+        "jolonarvaez"))
 
-        dataList.add(User("manoloenriquez",
-                        "Manolo",
-                        "Enriquez",
-                        "manoloenriquez@gmail.com"))
+        dataList.add(User(
+            "2",
+            "manoloenriquez@gmail.com",
+            "Manolo Enriquez",
+            "Manolo",
+            "Enriquez",
+        "manoloenriquez"))
 
         return dataList
     }
+
+
 
 }
 
