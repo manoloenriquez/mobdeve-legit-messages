@@ -27,7 +27,7 @@ class ContactAdapter(private val list: ArrayList<User>): RecyclerView.Adapter<Co
 //                val position: Int = adapterPosition
                 val intent = Intent(view.context, ContactActivity::class.java)
 
-                intent.putExtra("uid", username.text)
+                intent.putExtra("uid", uid)
                 intent.putExtra("username", username.text)
                 intent.putExtra("displayName", displayName.text)
                 intent.putExtra("email", email)

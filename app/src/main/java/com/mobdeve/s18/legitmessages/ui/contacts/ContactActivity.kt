@@ -34,11 +34,11 @@ class ContactActivity : AppCompatActivity() {
         }
 
         binding.addContact.setOnClickListener {
-
+            Toast.makeText(applicationContext, "UID: " + intent.getStringExtra("uid"), Toast.LENGTH_SHORT).show()
         }
 
         binding.deleteContact.setOnClickListener {
-            
+
         }
 
 
