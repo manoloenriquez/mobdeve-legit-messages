@@ -5,7 +5,7 @@ class User (val uid: String?, val email: String?, var displayName: String?){
     var firstName: String = ""
     var lastName: String = ""
 //    lateinit var contacts: Map<String, User>
-    lateinit var contacts: ArrayList<User>
+    var contacts: ArrayList<User> = ArrayList()
 
     constructor(
         uid: String?,

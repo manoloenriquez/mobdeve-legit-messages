@@ -7,11 +7,18 @@ import android.view.View
 import android.widget.Toast
 import com.mobdeve.s18.legitmessages.R
 import com.mobdeve.s18.legitmessages.databinding.ActivityContactBinding
+import com.mobdeve.s18.legitmessages.model.Database
+import com.mobdeve.s18.legitmessages.model.User
 import com.mobdeve.s18.legitmessages.ui.chats.ChatActivity
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.launch
 
 class ContactActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityContactBinding
+    val db: Database = Database()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,7 +41,13 @@ class ContactActivity : AppCompatActivity() {
         }
 
         binding.addContact.setOnClickListener {
-            Toast.makeText(applicationContext, "UID: " + intent.getStringExtra("uid"), Toast.LENGTH_SHORT).show()
+            val contactUid: String = intent.getStringExtra("uid") ?: return@setOnClickListener
+
+            CoroutineScope(Dispatchers.Main).launch {
+                if (User.currentUser?.uid?.let { it1 -> db.addContact(it1, contactUid) } == true) {
+                    Toast.makeText(applicationContext, "Successfully added", Toast.LENGTH_SHORT).show()
+                }
+            }
         }
 
         binding.deleteContact.setOnClickListener {

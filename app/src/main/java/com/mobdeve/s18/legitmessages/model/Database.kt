@@ -1,14 +1,13 @@
 package com.mobdeve.s18.legitmessages.model
 
 import android.util.Log
-import com.google.android.gms.tasks.Task
-import com.google.android.gms.tasks.Tasks
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.DocumentSnapshot
-import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 
 class Database {
@@ -86,8 +85,6 @@ class Database {
             .get()
             .await()
 
-        Log.i("Search", "${result.documents}")
-
         result.documents.forEach { document ->
             val data = document.data
             val user = User(
@@ -102,8 +99,61 @@ class Database {
             users.add(user)
         }
 
-        Log.i("Search", "$users")
-
         return users
+    }
+
+    fun loadContacts() {
+        Log.i("Contacts", "Fetching contacts")
+        User.currentUser?.uid?.let { db.collection("users").document(it).collection("contacts") }
+            ?.addSnapshotListener { snapshot, e ->
+                Log.i("Before clearing", "${User.currentUser?.contacts}")
+                User.currentUser?.contacts?.clear()
+                Log.i("After clearing", "${User.currentUser?.contacts}")
+                snapshot?.documents?.forEach { document ->
+                    val docData = document.data
+                    val userRef: DocumentReference = docData?.get("user") as DocumentReference
+                    var data: DocumentSnapshot? = null
+
+                    CoroutineScope(Dispatchers.Main).launch {
+                        data = userRef.get().await()
+                        Log.i("User", "${data}")
+
+                        User.currentUser!!.contacts.add(
+                            User(
+                                document.id,
+                                data?.get("email") as String?,
+                                "${data?.get("firstName")} ${data?.get("lastName")}",
+                                data?.get("firstName") as String,
+                                data!!["lastName"] as String,
+                                data!!["username"] as String
+                            )
+                        )
+                    }
+                }
+                Log.i("Contacts", "Done fetching contacts")
+            }
+
+    }
+
+    suspend fun addContact(currentUid: String, contactUid: String): Boolean {
+        val contactRef: DocumentReference = db.collection("users").document(contactUid)
+        val currentUserRef = db.collection("users").document(currentUid)
+
+        // Check if contact exists already
+//        currentUserRef
+//            .collection("contacts")
+//            .whereEqualTo("user", contactRef)
+//            .get()
+//            .await()
+
+        // Add to contact list
+        val map = hashMapOf(
+            "user" to contactRef
+        )
+        currentUserRef
+            .collection("contacts")
+            .add(map)
+
+        return true
     }
 }

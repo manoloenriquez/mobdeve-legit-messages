@@ -41,16 +41,17 @@ class MainActivity : AppCompatActivity() {
                 val data = userRef.data
 
                 if (data != null) {
-                    val contacts = db.getUserContacts(auth.currentUser!!.uid)
+//                    val contacts = db.getUserContacts(auth.currentUser!!.uid)
                     User.currentUser = User(
                         auth.currentUser!!.uid,
                         auth.currentUser!!.email,
                         auth.currentUser!!.displayName,
                         data["firstName"] as String,
                         data["lastName"] as String,
-                        data["username"] as String,
-                        contacts
+                        data["username"] as String
                     )
+
+                    db.loadContacts()
                 }
 
                 Log.i("Current User", "${User.currentUser}")
