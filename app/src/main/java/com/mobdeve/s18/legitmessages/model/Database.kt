@@ -103,34 +103,34 @@ class Database {
     }
 
     fun loadContacts() {
-        Log.i("Contacts", "Fetching contacts")
+
         User.currentUser?.uid?.let { db.collection("users").document(it).collection("contacts") }
             ?.addSnapshotListener { snapshot, e ->
-                Log.i("Before clearing", "${User.currentUser?.contacts}")
-                User.currentUser?.contacts?.clear()
-                Log.i("After clearing", "${User.currentUser?.contacts}")
-                snapshot?.documents?.forEach { document ->
-                    val docData = document.data
-                    val userRef: DocumentReference = docData?.get("user") as DocumentReference
-                    var data: DocumentSnapshot? = null
+                CoroutineScope(Dispatchers.Main).launch {
+                    Log.i("Contacts", "Fetching contacts")
+                    User.currentUser?.contacts?.clear()
 
-                    CoroutineScope(Dispatchers.Main).launch {
+                    snapshot?.documents?.forEach { document ->
+                        val docData = document.data
+                        val userRef: DocumentReference = docData?.get("user") as DocumentReference
+                        var data: DocumentSnapshot? = null
+
+
                         data = userRef.get().await()
-                        Log.i("User", "${data}")
 
                         User.currentUser!!.contacts.add(
                             User(
-                                document.id,
+                                userRef.id,
                                 data?.get("email") as String?,
                                 "${data?.get("firstName")} ${data?.get("lastName")}",
                                 data?.get("firstName") as String,
-                                data!!["lastName"] as String,
-                                data!!["username"] as String
+                                data["lastName"] as String,
+                                data["username"] as String
                             )
                         )
                     }
+                    Log.i("Contacts", "Done fetching contacts")
                 }
-                Log.i("Contacts", "Done fetching contacts")
             }
 
     }
@@ -153,6 +153,25 @@ class Database {
         currentUserRef
             .collection("contacts")
             .add(map)
+            .await()
+
+        return true
+    }
+
+    suspend fun deleteContact(currentUid: String, contactUid: String): Boolean {
+        val contactRef: DocumentReference = db.collection("users").document(contactUid)
+        val currentUserRef = db.collection("users").document(currentUid)
+
+
+        val result = currentUserRef.collection("contacts")
+            .whereEqualTo("user", contactRef)
+            .get()
+            .await()
+
+        Log.i("Results","${result.documents}")
+        Log.i("ContactRef", "$contactRef")
+
+        result.documents[0].reference.delete()
 
         return true
     }

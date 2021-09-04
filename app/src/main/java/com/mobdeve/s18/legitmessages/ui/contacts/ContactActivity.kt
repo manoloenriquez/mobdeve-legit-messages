@@ -3,8 +3,10 @@ package com.mobdeve.s18.legitmessages.ui.contacts
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
+import com.mobdeve.s18.legitmessages.MainActivity
 import com.mobdeve.s18.legitmessages.R
 import com.mobdeve.s18.legitmessages.databinding.ActivityContactBinding
 import com.mobdeve.s18.legitmessages.model.Database
@@ -51,7 +53,17 @@ class ContactActivity : AppCompatActivity() {
         }
 
         binding.deleteContact.setOnClickListener {
+            val contactUid: String = intent.getStringExtra("uid") ?: return@setOnClickListener
+            Log.i("ContactUid", contactUid)
+            CoroutineScope(Dispatchers.Main).launch {
+                if (User.currentUser?.uid?.let { it1 -> db.deleteContact(it1, contactUid) } == true) {
+                    Toast.makeText(applicationContext, "Successfully deleted", Toast.LENGTH_SHORT).show()
+                }
 
+//                val intent = Intent(applicationContext, MainActivity::class.java)
+//                startActivity(intent)
+                finish()
+            }
         }
 
 
