@@ -33,6 +33,14 @@ class ContactActivity : AppCompatActivity() {
 //            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
         }
 
+        binding.addContact.setOnClickListener {
+
+        }
+
+        binding.deleteContact.setOnClickListener {
+            
+        }
+
 
     }
 }
