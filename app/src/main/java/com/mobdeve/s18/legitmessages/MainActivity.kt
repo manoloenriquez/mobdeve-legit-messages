@@ -32,7 +32,6 @@ class MainActivity : AppCompatActivity() {
                 val data = userRef.data
 
                 if (data != null) {
-//                    val contacts = db.getUserContacts(auth.currentUser!!.uid)
                     User.currentUser = User(
                         auth.currentUser!!.uid,
                         auth.currentUser!!.email,
@@ -43,7 +42,7 @@ class MainActivity : AppCompatActivity() {
                     )
 
                     db.loadContacts()
-                    db.loadChats()
+//                    db.loadChats()
                 }
 
                 Log.i("Current User", "${User.currentUser}")
