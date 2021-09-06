@@ -55,4 +55,12 @@ class ContactsFragment : Fragment() {
 
         return binding.root
     }
+
+    override fun onResume() {
+        super.onResume()
+
+        val contactList = User.currentUser?.contacts
+        contactAdapter = contactList?.let { ContactAdapter(it) }!!
+        binding.rvContactList.adapter = contactAdapter
+    }
 }
