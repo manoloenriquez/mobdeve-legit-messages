@@ -1,5 +1,6 @@
 package com.mobdeve.s18.legitmessages.ui.message
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,8 +13,8 @@ import com.mobdeve.s18.legitmessages.model.User
 class MessageAdapter(private val list: ArrayList<Message>):
     RecyclerView.Adapter<MessageAdapter.MessageViewHolder>() {
 
-    public final var MSG_TYPE_LEFT = 0
-    public final var MSG_TYPE_RIGHT = 1
+    final var MSG_TYPE_LEFT = 0
+    final var MSG_TYPE_RIGHT = 1
 
     class MessageViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
@@ -26,6 +27,7 @@ class MessageAdapter(private val list: ArrayList<Message>):
             val view = LayoutInflater.from(parent.context)
                 .inflate(R.layout.chat_item_right, parent, false)
             MessageAdapter.MessageViewHolder(view)
+
         } else{
             val view = LayoutInflater.from(parent.context)
                 .inflate(R.layout.chat_item_left, parent, false)
@@ -40,10 +42,10 @@ class MessageAdapter(private val list: ArrayList<Message>):
     }
 
     override fun getItemViewType(position: Int): Int{
-        return if(list[position].sender == User.currentUser?.uid)
-            MSG_TYPE_RIGHT
+        if(list[position].sender == User.currentUser?.uid.toString())
+            return MSG_TYPE_RIGHT
         else
-            MSG_TYPE_LEFT
+            return MSG_TYPE_LEFT
     }
 
     override fun getItemCount() = list.size

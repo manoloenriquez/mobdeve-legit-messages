@@ -21,7 +21,8 @@ class ChatActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         messageList = ArrayList()
-        User.currentUser?.uid?.let { Message(it,"Hello", "11:59pm") }?.let { messageList.add(it) }
+//        User.currentUser?.uid?.let { Message(it,"Hello", "11:59pm") }?.let { messageList.add(it) }
+        messageList.add(Message("manolo", "test message", "11:59pm"))
 
         binding = ActivityChatBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -39,13 +40,16 @@ class ChatActivity : AppCompatActivity() {
 
             if ((hour >=0) && (hour <= 11))
                 meridian = "AM"
-            else
+            else{
+                hour -= 12
                 meridian = "PM"
-
-            hour -= 12
+            }
 
             if(!binding.messageInput.equals("")){
-                messageList.add(com.mobdeve.s18.legitmessages.model.Message(binding.messageInput.text.toString(),   "$hour:$minute " + meridian))
+                User.currentUser?.uid?.let { it1 ->
+                    com.mobdeve.s18.legitmessages.model.Message(
+                        it1, binding.messageInput.text.toString(),   "$hour:$minute " + meridian)
+                }?.let { it2 -> messageList.add(it2) }
                 setAdapter()
                 binding.messageInput.text = null
             }
