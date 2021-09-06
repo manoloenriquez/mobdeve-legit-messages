@@ -6,9 +6,9 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.mobdeve.s18.legitmessages.R
-import com.mobdeve.s18.legitmessages.model.Chat
+import com.mobdeve.s18.legitmessages.model.Message
 
-class MessageAdapter(private val list: ArrayList<Chat>):
+class MessageAdapter(private val list: ArrayList<Message>):
     RecyclerView.Adapter<MessageAdapter.MessageViewHolder>() {
 
     public final var MSG_TYPE_LEFT = 0

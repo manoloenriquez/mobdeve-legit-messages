@@ -175,4 +175,14 @@ class Database {
 
         return true
     }
+
+    suspend fun getChats(): ArrayList<Chat> {
+        val messages = ArrayList<Chat>()
+
+//        val ref =
+//            db.collection("chats")
+//                .where
+
+        return messages
+    }
 }

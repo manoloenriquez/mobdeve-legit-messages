@@ -36,4 +36,5 @@ class ChatsFragment : Fragment() {
 
         return binding.root
     }
+
 }
