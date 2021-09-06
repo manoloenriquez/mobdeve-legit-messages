@@ -176,13 +176,46 @@ class Database {
         return true
     }
 
-    suspend fun getChats(): ArrayList<Chat> {
-        val messages = ArrayList<Chat>()
+    suspend fun loadChats() {
+        val currentUid: String? = User.currentUser!!.uid
+        val chats = ArrayList<Chat>()
+        val userRef: DocumentReference? = currentUid?.let { db.collection("users").document(it) }
+        val receivers = hashMapOf<String, String>()
 
-//        val ref =
-//            db.collection("chats")
-//                .where
+        if (userRef != null) {
+            db.collection("chats")
+                .whereArrayContains("participants", userRef)
+                .limit(100)
+                .addSnapshotListener { value, error ->
 
-        return messages
+                    value?.documents?.forEach { document ->
+                        val data = document.data
+                        val chat = Chat(document.id)
+
+                        (data?.get("participants") as ArrayList<DocumentReference>).forEach { userRef ->
+                            CoroutineScope(Dispatchers.Main).launch {
+                                if (receivers.get(userRef.id) != null) {
+                                    chat.participants.add(receivers.get(userRef.id)!!)
+                                } else if (userRef.id != currentUid) {
+                                    val user = userRef.get().await()
+                                    val username: String = user.data?.get("username") as String
+
+                                    receivers.put(userRef.id, username)
+
+                                    chat.participants.add(receivers.get(userRef.id)!!)
+                                }
+
+                                Log.d("Chats", "${chat.participants}")
+                            }
+                        }
+                        chats.add(chat)
+                    }
+                }
+
+            User.currentUser!!.chats = chats
+            Log.d("Chats", "${User.currentUser!!.chats}")
+        }
+
+
     }
 }

@@ -43,6 +43,7 @@ class MainActivity : AppCompatActivity() {
                     )
 
                     db.loadContacts()
+                    db.loadChats()
                 }
 
                 Log.i("Current User", "${User.currentUser}")
