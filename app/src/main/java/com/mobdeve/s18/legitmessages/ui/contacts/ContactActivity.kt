@@ -32,16 +32,6 @@ class ContactActivity : AppCompatActivity() {
         binding.emailContact.text = intent.getStringExtra("email")
         binding.usernameContact.text = intent.getStringExtra("username")
 
-        binding.goToChat.setOnClickListener {
-
-            val intent = Intent(applicationContext, ChatActivity::class.java)
-
-//            intent.putExtra("chat_username", intent.getStringExtra("username"))
-//            intent.putExtra("chat_displayName", intent.getStringExtra("displayName"))
-//            startActivity(intent)
-//            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
-        }
-
         binding.addContact.setOnClickListener {
             val contactUid: String = intent.getStringExtra("uid") ?: return@setOnClickListener
 

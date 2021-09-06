@@ -54,14 +54,6 @@
             android:text="Add to Contacts"
             android:layout_marginTop="15dp"/>
 
-
-        <Button
-            android:id="@+id/go_to_chat"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Go to Chat"
-            android:layout_marginTop="15dp"/>
-
         <Button
             android:id="@+id/delete_contact"
             android:layout_width="match_parent"
