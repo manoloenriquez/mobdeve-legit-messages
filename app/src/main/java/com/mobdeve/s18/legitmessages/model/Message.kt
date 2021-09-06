@@ -15,7 +15,7 @@ class Message {
     }
 
     constructor(sender: String, message: String, timeStamp: String) {
-        this.sender = User.currentUser?.uid.toString()
+        this.sender = sender
         this.message = message
         this.timeStamp = timeStamp
     }
