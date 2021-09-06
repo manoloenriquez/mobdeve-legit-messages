@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mobdeve.s18.legitmessages.R
 import com.mobdeve.s18.legitmessages.databinding.FragmentChatsBinding
+import com.mobdeve.s18.legitmessages.model.Chat
 import com.mobdeve.s18.legitmessages.model.User
 import com.mobdeve.s18.legitmessages.util.DataHelper
 
@@ -25,7 +26,7 @@ class ChatsFragment : Fragment() {
     ): View? {
 
         var dataHelper = DataHelper()
-        var chatList : ArrayList<User> = dataHelper.initList()
+        var chatList : ArrayList<Chat> = dataHelper.initList()
 
         chatAdapter = ChatAdapter(chatList)
         binding = FragmentChatsBinding.inflate(layoutInflater)

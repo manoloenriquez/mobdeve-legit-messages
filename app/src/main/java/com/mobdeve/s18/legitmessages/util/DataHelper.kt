@@ -1,28 +1,23 @@
 package com.mobdeve.s18.legitmessages.util
 
+import com.mobdeve.s18.legitmessages.model.Chat
 import com.mobdeve.s18.legitmessages.model.User
 import java.util.ArrayList
 
 class DataHelper {
 
-    private val dataList = ArrayList<User>()
+    private val dataList = ArrayList<Chat>()
 
-    fun initList(): ArrayList<User> {
-        dataList.add(User(
+    fun initList(): ArrayList<Chat> {
+        dataList.add(Chat(
             "1",
-            "jolonarvaez@gmail.com",
-            "Jolo Narvaez",
-        "Jolo",
-        "Narvaez",
-        "jolonarvaez"))
+            "jolonarvaez"
+        ))
 
-        dataList.add(User(
+        dataList.add(Chat(
             "2",
-            "manoloenriquez@gmail.com",
-            "Manolo Enriquez",
-            "Manolo",
-            "Enriquez",
-        "manoloenriquez"))
+            "manoloenriquez"
+        ))
 
         return dataList
     }
