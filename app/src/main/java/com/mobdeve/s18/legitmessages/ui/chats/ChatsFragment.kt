@@ -33,8 +33,7 @@ class ChatsFragment : Fragment() {
         binding.chatsRvList.adapter = chatAdapter
         linearLayoutManager = LinearLayoutManager(activity)
         binding.chatsRvList.layoutManager = linearLayoutManager
-
-
+        
         return binding.root
     }
 

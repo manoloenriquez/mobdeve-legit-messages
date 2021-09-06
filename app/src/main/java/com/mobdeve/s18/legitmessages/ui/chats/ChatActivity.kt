@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mobdeve.s18.legitmessages.databinding.ActivityChatBinding
+import com.mobdeve.s18.legitmessages.model.Message
+import com.mobdeve.s18.legitmessages.model.User
 import com.mobdeve.s18.legitmessages.ui.message.MessageAdapter
 import java.util.*
 import kotlin.collections.ArrayList
@@ -19,6 +21,7 @@ class ChatActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         messageList = ArrayList()
+        User.currentUser?.uid?.let { Message(it,"Hello", "11:59pm") }?.let { messageList.add(it) }
 
         binding = ActivityChatBinding.inflate(layoutInflater)
         setContentView(binding.root)
