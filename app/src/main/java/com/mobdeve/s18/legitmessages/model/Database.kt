@@ -176,6 +176,46 @@ class Database {
         return true
     }
 
+    suspend fun getChats(): ArrayList<Chat> {
+        val currentUid: String? = User.currentUser!!.uid
+        val chats = ArrayList<Chat>()
+        val userRef: DocumentReference? = currentUid?.let { db.collection("users").document(it) }
+        val receivers = hashMapOf<String, String>()
+
+        if (userRef != null) {
+            val chatsRef = db.collection("chats")
+                .whereArrayContains("participants", userRef)
+                .limit(100)
+                .get()
+                .await()
+
+            chatsRef.documents.forEach { document ->
+                val data = document.data
+                val chat = Chat(document.id)
+
+                (data?.get("participants") as ArrayList<DocumentReference>).forEach { userRef ->
+                    CoroutineScope(Dispatchers.Main).launch {
+                        if (receivers.get(userRef.id) != null) {
+                            chat.participants.add(receivers.get(userRef.id)!!)
+                        } else if (userRef.id != currentUid) {
+                            val user = userRef.get().await()
+                            val username: String = user.data?.get("username") as String
+                            receivers.put(userRef.id, username)
+
+                            chat.participants.add(receivers.get(userRef.id)!!)
+                        }
+
+                        Log.d("Chats", "${chat.participants}")
+                    }
+                }
+                chats.add(chat)
+            }
+        }
+
+        return chats
+
+    }
+
     suspend fun loadChats() {
         val currentUid: String? = User.currentUser!!.uid
         val chats = ArrayList<Chat>()
@@ -215,7 +255,5 @@ class Database {
             User.currentUser!!.chats = chats
             Log.d("Chats", "${User.currentUser!!.chats}")
         }
-
-
     }
 }
