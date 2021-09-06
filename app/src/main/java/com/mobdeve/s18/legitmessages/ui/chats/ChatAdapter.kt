@@ -41,9 +41,9 @@ class ChatAdapter(private val list: ArrayList<Chat>): RecyclerView.Adapter<ChatA
     }
 
     override fun onBindViewHolder(holder: ChatAdapter.ChatViewHolder, position: Int) {
-        holder.username.text = list[position].username
-        holder.chat_username = list[position].username
-        holder.uid = list[position].chatId.toString()
+        holder.username.text = list[position].label
+        holder.chat_username = list[position].label
+        holder.uid = list[position].chatId
     }
 
     override fun getItemCount() = list.size

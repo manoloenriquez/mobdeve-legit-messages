@@ -8,20 +8,20 @@ class DataHelper {
 
     private val dataList = ArrayList<Chat>()
 
-    fun initList(): ArrayList<Chat> {
-        dataList.add(Chat(
-            "1",
-            "jolonarvaez"
-        ))
-
-        dataList.add(Chat(
-            "2",
-            "manoloenriquez"
-        ))
-
-        return dataList
-    }
-
+//    fun initList(): ArrayList<Chat> {
+//        dataList.add(Chat(
+//            "1",
+//            "jolonarvaez"
+//        ))
+//
+//        dataList.add(Chat(
+//            "2",
+//            "manoloenriquez"
+//        ))
+//
+//        return dataList
+//    }
+//
 
 
 }

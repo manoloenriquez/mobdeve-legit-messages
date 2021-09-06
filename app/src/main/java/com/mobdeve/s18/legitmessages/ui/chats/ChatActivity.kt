@@ -2,11 +2,16 @@ package com.mobdeve.s18.legitmessages.ui.chats
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mobdeve.s18.legitmessages.databinding.ActivityChatBinding
+import com.mobdeve.s18.legitmessages.model.Database
 import com.mobdeve.s18.legitmessages.model.Message
 import com.mobdeve.s18.legitmessages.model.User
 import com.mobdeve.s18.legitmessages.ui.message.MessageAdapter
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -53,6 +58,20 @@ class ChatActivity : AppCompatActivity() {
                 setAdapter()
                 binding.messageInput.text = null
             }
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        val db = Database()
+        val chatId = intent.getStringExtra("uid")
+        if (chatId != null) {
+            Log.i("Messages", chatId)
+        }
+        CoroutineScope(Dispatchers.Main).launch {
+            messageList = chatId?.let { db.getMessages(it) }!!
+            setAdapter()
         }
     }
 
