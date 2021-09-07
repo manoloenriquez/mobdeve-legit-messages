@@ -38,7 +38,7 @@ class MessageAdapter(private val list: ArrayList<Message>):
 
     override fun onBindViewHolder(holder: MessageViewHolder, position: Int) {
         holder.messageBox.text = list[position].message
-        holder.timeStamp.text = list[position].timeStamp
+        holder.timeStamp.text = list[position].timeStampString()
     }
 
     override fun getItemViewType(position: Int): Int{

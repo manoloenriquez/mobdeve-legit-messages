@@ -6,9 +6,9 @@ import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.mobdeve.s18.legitmessages.ui.chats.ChatAdapter
 import kotlinx.coroutines.*
 import kotlinx.coroutines.tasks.await
-import java.text.SimpleDateFormat
 
 class Database {
 
@@ -221,75 +221,85 @@ class Database {
 
     }
 
-    suspend fun getMessages(chatId: String): ArrayList<Message> {
-        val currentUid: String? = User.currentUser!!.uid
-        val messages = ArrayList<Message>()
-        Log.d("Messages", chatId)
-        val ref = db.collection("chats").document(chatId).collection("messages")
-        val snapshot = ref.get().await()
+//    suspend fun getMessages(chatId: String): ArrayList<Message> {
+//        val messages = ArrayList<Message>()
+//        Log.d("Messages", chatId)
+//        val ref = db.collection("chats")
+//                    .document(chatId)
+//                    .collection("messages")
+//                    .orderBy("timeStamp")
+//        val snapshot = ref.get().await()
+//
+//        snapshot.documents.forEach { document ->
+//            withContext(CoroutineScope(Dispatchers.Main).coroutineContext) {
+//                val data = document.data
+//                val sender = (data?.get("sender") as DocumentReference).id
+//
+//                val timeStamp = data.get("timeStamp") as Timestamp
+//
+//                val message = Message(
+//                    sender,
+//                    data.get("message") as String,
+//                    timeStamp
+//                )
+//
+//                messages.add(message)
+//            }
+//        }
+//
+//        return messages
+//    }
 
-        snapshot.documents.forEach { document ->
-            CoroutineScope(Dispatchers.Main).async {
-                val data = document.data
-                val sender = (data?.get("sender") as DocumentReference).id
 
-                val timeStamp = data.get("timeStamp") as Timestamp
+//    suspend fun loadChats() {
+//        val currentUid: String? = User.currentUser!!.uid
+//        val chats = ArrayList<Chat>()
+//        val userRef: DocumentReference? = currentUid?.let { db.collection("users").document(it) }
+//        val receivers = hashMapOf<String, String>()
+//
+//        if (userRef != null) {
+//            db.collection("chats")
+//                .whereArrayContains("participants", userRef)
+//                .limit(100)
+//                .addSnapshotListener { value, error ->
+//
+//                    value?.documents?.forEach { document ->
+//                        val data = document.data
+//                        val chat = Chat(document.id)
+//
+//                        (data?.get("participants") as ArrayList<DocumentReference>).forEach { userRef ->
+//                            CoroutineScope(Dispatchers.Main).launch {
+//                                if (receivers.get(userRef.id) != null) {
+//                                    chat.participants.add(receivers.get(userRef.id)!!)
+//                                } else if (userRef.id != currentUid) {
+//                                    val user = userRef.get().await()
+//                                    val username: String = user.data?.get("username") as String
+//
+//                                    receivers.put(userRef.id, username)
+//
+//                                    chat.participants.add(receivers.get(userRef.id)!!)
+//                                }
+//
+//                                Log.d("Chats", "${chat.participants}")
+//                            }
+//                        }
+//                        chats.add(chat)
+//                    }
+//                }
+//
+//            User.currentUser!!.chats = chats
+//            Log.d("Chats", "${User.currentUser!!.chats}")
+//        }
+//    }
 
-                val timeString =
-                    SimpleDateFormat("HHmm")
-                        .format(timeStamp.toDate())
+    fun addMessage(chatUid: String, message: Message) {
+        val ref = db.collection("chats").document(chatUid)
+        val data = hashMapOf(
+            "message" to message.message,
+            "sender" to db.collection("users").document(message.sender),
+            "timeStamp" to message.timeStamp
+        )
 
-                val message = Message(
-                    sender,
-                    data.get("message") as String,
-                    timeString
-                )
-
-                messages.add(message)
-            }.await()
-        }
-
-        return messages
-    }
-
-    suspend fun loadChats() {
-        val currentUid: String? = User.currentUser!!.uid
-        val chats = ArrayList<Chat>()
-        val userRef: DocumentReference? = currentUid?.let { db.collection("users").document(it) }
-        val receivers = hashMapOf<String, String>()
-
-        if (userRef != null) {
-            db.collection("chats")
-                .whereArrayContains("participants", userRef)
-                .limit(100)
-                .addSnapshotListener { value, error ->
-
-                    value?.documents?.forEach { document ->
-                        val data = document.data
-                        val chat = Chat(document.id)
-
-                        (data?.get("participants") as ArrayList<DocumentReference>).forEach { userRef ->
-                            CoroutineScope(Dispatchers.Main).launch {
-                                if (receivers.get(userRef.id) != null) {
-                                    chat.participants.add(receivers.get(userRef.id)!!)
-                                } else if (userRef.id != currentUid) {
-                                    val user = userRef.get().await()
-                                    val username: String = user.data?.get("username") as String
-
-                                    receivers.put(userRef.id, username)
-
-                                    chat.participants.add(receivers.get(userRef.id)!!)
-                                }
-
-                                Log.d("Chats", "${chat.participants}")
-                            }
-                        }
-                        chats.add(chat)
-                    }
-                }
-
-            User.currentUser!!.chats = chats
-            Log.d("Chats", "${User.currentUser!!.chats}")
-        }
+        ref.collection("messages").add(data)
     }
 }

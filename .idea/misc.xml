@@ -4,6 +4,7 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="app/src/main/res/layout-w1240dp/activity_login.xml" value="0.16900937081659972" />
+        <entry key="app/src/main/res/layout/activity_chat.xml" value="0.22826086956521738" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.2630208333333333" />
         <entry key="app/src/main/res/layout/chat_item_left.xml" value="0.1" />
         <entry key="app/src/main/res/layout/chat_item_right.xml" value="0.1" />
