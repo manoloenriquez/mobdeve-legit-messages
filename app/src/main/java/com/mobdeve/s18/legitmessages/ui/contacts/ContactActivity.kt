@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import com.mobdeve.s18.legitmessages.MainActivity
 import com.mobdeve.s18.legitmessages.R
 import com.mobdeve.s18.legitmessages.databinding.ActivityContactBinding
@@ -42,6 +44,7 @@ class ContactActivity : AppCompatActivity() {
             }
         }
 
+        binding.deleteContact.visibility = View.GONE
         binding.deleteContact.setOnClickListener {
             val contactUid: String = intent.getStringExtra("uid") ?: return@setOnClickListener
             Log.i("ContactUid", contactUid)
@@ -55,7 +58,18 @@ class ContactActivity : AppCompatActivity() {
 //                finish()
             }
         }
+    }
 
+    override fun onStart() {
+        super.onStart()
 
+        val contactId = intent.getStringExtra("uid")
+
+        User.currentUser?.contacts?.forEach { user ->
+            if (user.uid == contactId) {
+                binding.addContact.visibility = View.GONE
+                binding.deleteContact.visibility = View.VISIBLE
+            }
+        }
     }
 }
