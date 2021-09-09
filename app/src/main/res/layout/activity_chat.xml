@@ -7,20 +7,20 @@
     tools:context=".ui.chats.ChatActivity">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/contact_tool_bar"
+        android:id="@+id/chat_tool_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
         android:background="@color/power_blue"
+        android:gravity="center"
         app:titleTextColor="@color/white"
-        android:gravity="center">
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:id="@+id/chat_header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="CHAT HEADER"
             android:gravity="center"
+            android:text="CHAT HEADER"
             android:textColor="@color/white"
             android:textSize="23dp" />
 
@@ -29,9 +29,11 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_chat"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/contact_tool_bar" />
+        android:layout_height="0dp"
+        android:fitsSystemWindows="true"
+        app:layout_constraintBottom_toTopOf="@id/relativeLayout2"
+        app:layout_constraintTop_toBottomOf="@id/chat_tool_bar"
+        app:layout_constraintVertical_bias="0.0" />
 
     <RelativeLayout
         android:id="@+id/relativeLayout2"
@@ -43,9 +45,10 @@
             android:id="@+id/message_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
             android:layout_toLeftOf="@id/message_input"
-            android:hint="Enter your message here..." />
+            android:background="@color/white"
+            android:hint="Enter your message here..."
+            android:paddingVertical="10dp" />
 
         <ImageButton
             android:id="@+id/message_send"

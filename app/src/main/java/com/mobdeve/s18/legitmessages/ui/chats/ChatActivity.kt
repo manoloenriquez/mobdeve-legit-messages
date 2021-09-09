@@ -40,6 +40,8 @@ class ChatActivity : AppCompatActivity() {
 
         initSendMessage()
         initListener()
+        setSupportActionBar(binding.chatToolBar)
+
     }
 
 //    override fun onStart() {
@@ -60,7 +62,9 @@ class ChatActivity : AppCompatActivity() {
         messageAdapter = MessageAdapter(messageList)
         binding.rvChat.adapter = messageAdapter
         linearLayoutManager = LinearLayoutManager(applicationContext)
+        linearLayoutManager.stackFromEnd
         binding.rvChat.layoutManager = linearLayoutManager
+        binding.rvChat.smoothScrollToPosition(messageList.size)
     }
 
     fun initSendMessage() {
