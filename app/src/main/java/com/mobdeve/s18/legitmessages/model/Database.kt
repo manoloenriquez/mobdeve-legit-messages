@@ -1,18 +1,22 @@
 package com.mobdeve.s18.legitmessages.model
 
+import android.net.Uri
 import android.util.Log
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
 import com.mobdeve.s18.legitmessages.ui.chats.ChatAdapter
 import kotlinx.coroutines.*
 import kotlinx.coroutines.tasks.await
+import java.io.File
 
 class Database {
 
     val db = Firebase.firestore
+    val storage = Firebase.storage
 
     fun setUser(user: User) {
         val map = hashMapOf(
@@ -221,77 +225,6 @@ class Database {
 
     }
 
-//    suspend fun getMessages(chatId: String): ArrayList<Message> {
-//        val messages = ArrayList<Message>()
-//        Log.d("Messages", chatId)
-//        val ref = db.collection("chats")
-//                    .document(chatId)
-//                    .collection("messages")
-//                    .orderBy("timeStamp")
-//        val snapshot = ref.get().await()
-//
-//        snapshot.documents.forEach { document ->
-//            withContext(CoroutineScope(Dispatchers.Main).coroutineContext) {
-//                val data = document.data
-//                val sender = (data?.get("sender") as DocumentReference).id
-//
-//                val timeStamp = data.get("timeStamp") as Timestamp
-//
-//                val message = Message(
-//                    sender,
-//                    data.get("message") as String,
-//                    timeStamp
-//                )
-//
-//                messages.add(message)
-//            }
-//        }
-//
-//        return messages
-//    }
-
-
-//    suspend fun loadChats() {
-//        val currentUid: String? = User.currentUser!!.uid
-//        val chats = ArrayList<Chat>()
-//        val userRef: DocumentReference? = currentUid?.let { db.collection("users").document(it) }
-//        val receivers = hashMapOf<String, String>()
-//
-//        if (userRef != null) {
-//            db.collection("chats")
-//                .whereArrayContains("participants", userRef)
-//                .limit(100)
-//                .addSnapshotListener { value, error ->
-//
-//                    value?.documents?.forEach { document ->
-//                        val data = document.data
-//                        val chat = Chat(document.id)
-//
-//                        (data?.get("participants") as ArrayList<DocumentReference>).forEach { userRef ->
-//                            CoroutineScope(Dispatchers.Main).launch {
-//                                if (receivers.get(userRef.id) != null) {
-//                                    chat.participants.add(receivers.get(userRef.id)!!)
-//                                } else if (userRef.id != currentUid) {
-//                                    val user = userRef.get().await()
-//                                    val username: String = user.data?.get("username") as String
-//
-//                                    receivers.put(userRef.id, username)
-//
-//                                    chat.participants.add(receivers.get(userRef.id)!!)
-//                                }
-//
-//                                Log.d("Chats", "${chat.participants}")
-//                            }
-//                        }
-//                        chats.add(chat)
-//                    }
-//                }
-//
-//            User.currentUser!!.chats = chats
-//            Log.d("Chats", "${User.currentUser!!.chats}")
-//        }
-//    }
-
     fun addMessage(chatUid: String, message: Message) {
         val ref = db.collection("chats").document(chatUid)
         val data = hashMapOf(
@@ -301,5 +234,69 @@ class Database {
         )
 
         ref.collection("messages").add(data)
+    }
+
+    fun editMessage(chatUid: String, messageUid: String, message: Message) {
+        val ref =
+            db.collection("chats")
+                .document(chatUid)
+                .collection("messages")
+                .document(messageUid)
+
+        val data = hashMapOf(
+            "message" to message.message,
+            "sender" to db.collection("users").document(message.sender),
+            "timeStamp" to message.timeStamp
+        )
+
+        ref.update(data)
+    }
+
+    fun deleteMessage(chatUid: String, messageUid: String) {
+        val ref =
+            db.collection("chats")
+                .document(chatUid)
+                .collection("messages")
+                .document(messageUid)
+
+        ref.delete()
+    }
+
+    fun addChat(participants: ArrayList<String>) {
+        val participantsRef: ArrayList<DocumentReference> = ArrayList()
+
+        participants.forEach { p ->
+            val ref = db.collection("users").document(p)
+            participantsRef.add(ref)
+        }
+
+        val data = hashMapOf(
+            "participants" to participantsRef
+        )
+
+        db.collection("chats").add(data)
+    }
+
+    fun addImageMessage(chatUid: String, message: ImageMessage) {
+        val img = Uri.fromFile(message.file)
+        val storageRef = storage.reference
+        val imgRef = storageRef.child("$chatUid/${message.file.name}")
+
+        val uploadTask = imgRef.putFile(img)
+
+        uploadTask.addOnSuccessListener { snapshot ->
+            imgRef.downloadUrl.addOnCompleteListener { url ->
+                Log.i("URL", url.toString())
+
+                val ref = db.collection("chats").document(chatUid)
+                val data = hashMapOf(
+                    "image" to url.toString(),
+                    "sender" to db.collection("users").document(message.sender),
+                    "timeStamp" to message.timeStamp
+                )
+
+                ref.collection("messages").add(data)
+            }
+        }
     }
 }
