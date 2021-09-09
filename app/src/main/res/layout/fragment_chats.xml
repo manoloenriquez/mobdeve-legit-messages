@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.chats.ChatsFragment"
-    >
+    tools:context=".ui.chats.ChatsFragment">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/chat_tool_bar"
@@ -46,19 +45,12 @@
 
     </androidx.appcompat.widget.Toolbar>
 
-    <ScrollView
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/chats_rv_list"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/chat_tool_bar">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/chats_rv_list"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:listitem="@layout/chat_list_data"
-          />
-    </ScrollView>
-
+        android:layout_height="0dp"
+        tools:listitem="@layout/chat_list_data"
+        app:layout_constraintTop_toBottomOf="@id/chat_tool_bar"
+      />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

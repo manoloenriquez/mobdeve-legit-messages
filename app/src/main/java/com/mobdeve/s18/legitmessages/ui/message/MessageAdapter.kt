@@ -1,14 +1,19 @@
 package com.mobdeve.s18.legitmessages.ui.message
 
+import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
+import android.widget.PopupMenu
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.mobdeve.s18.legitmessages.R
 import com.mobdeve.s18.legitmessages.model.Message
 import com.mobdeve.s18.legitmessages.model.User
+import com.mobdeve.s18.legitmessages.ui.select_contact.SelectContactActivity
 
 class MessageAdapter(private val list: ArrayList<Message>):
     RecyclerView.Adapter<MessageAdapter.MessageViewHolder>() {
@@ -18,8 +23,30 @@ class MessageAdapter(private val list: ArrayList<Message>):
 
     class MessageViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
+        val message: LinearLayout = view.findViewById(R.id.message_layout)
         val messageBox: TextView = view.findViewById(R.id.show_message)
         val timeStamp: TextView = view.findViewById(R.id.time_stamp)
+
+        init {
+            message.setOnLongClickListener{
+                val popup = PopupMenu(view.context, message)
+                popup.menuInflater.inflate(R.menu.chat_menu, popup.menu)
+
+                popup.setOnMenuItemClickListener(PopupMenu.OnMenuItemClickListener { item ->
+                    when(item.itemId) {
+                        R.id.edit_message ->
+                            Toast.makeText(view.context, "Edit text", Toast.LENGTH_SHORT).show()
+
+                        R.id.delete_message ->
+                            Toast.makeText(view.context, "Delete text", Toast.LENGTH_SHORT).show()
+
+                    }
+                    true
+                })
+                popup.show()
+                true
+            }
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MessageAdapter.MessageViewHolder {

@@ -1,18 +1,23 @@
 package com.mobdeve.s18.legitmessages.ui.chats
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.PopupMenu
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.mobdeve.s18.legitmessages.R
 import com.mobdeve.s18.legitmessages.databinding.ActivityChatBinding
 import com.mobdeve.s18.legitmessages.model.Database
 import com.mobdeve.s18.legitmessages.model.Message
 import com.mobdeve.s18.legitmessages.model.User
 import com.mobdeve.s18.legitmessages.ui.message.MessageAdapter
+import com.mobdeve.s18.legitmessages.ui.select_contact.SelectContactActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -37,6 +42,30 @@ class ChatActivity : AppCompatActivity() {
         setAdapter()
 
         binding.chatHeader.text = intent.getStringExtra("chat_displayName")
+
+        binding.attachFile.setOnClickListener {
+
+            val popup = PopupMenu(applicationContext, binding.attachFile)
+            popup.menuInflater.inflate(R.menu.chat_options, popup.menu)
+
+            popup.setOnMenuItemClickListener(PopupMenu.OnMenuItemClickListener { item ->
+                when(item.itemId) {
+                    R.id.photo_video ->
+                        Toast.makeText(applicationContext, item.title, Toast.LENGTH_SHORT).show()
+
+                    R.id.disappearing_messages ->
+                        Toast.makeText(applicationContext, item.title, Toast.LENGTH_SHORT).show()
+
+                    R.id.drawing ->
+                        Toast.makeText(applicationContext, item.title, Toast.LENGTH_SHORT).show()
+
+                    R.id.text_to_speech ->
+                        Toast.makeText(applicationContext, item.title, Toast.LENGTH_SHORT).show()
+                }
+                true
+            })
+            popup.show()
+        }
 
         initSendMessage()
         initListener()
