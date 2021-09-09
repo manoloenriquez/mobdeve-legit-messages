@@ -4,7 +4,7 @@ import com.google.firebase.Timestamp
 import java.util.*
 import kotlin.time.hours
 
-class Message {
+open class Message {
 
     var sender: String = ""
     var message: String = ""
@@ -22,7 +22,8 @@ class Message {
         this.timeStamp = Timestamp.now()
     }
 
-    fun send(chatId: String) {
+
+    open fun send(chatId: String) {
         val db = Database()
 
         db.addMessage(chatId, this)
