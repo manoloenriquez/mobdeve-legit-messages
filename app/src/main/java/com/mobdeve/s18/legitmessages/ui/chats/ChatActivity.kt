@@ -13,16 +13,14 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.mobdeve.s18.legitmessages.R
 import com.mobdeve.s18.legitmessages.databinding.ActivityChatBinding
-import com.mobdeve.s18.legitmessages.model.Database
 import com.mobdeve.s18.legitmessages.model.Message
 import com.mobdeve.s18.legitmessages.model.User
 import com.mobdeve.s18.legitmessages.ui.message.MessageAdapter
-import com.mobdeve.s18.legitmessages.ui.select_contact.SelectContactActivity
+import com.mobdeve.s18.legitmessages.ui.search_chat.SearchChatActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.util.*
 import kotlin.collections.ArrayList
 
 class ChatActivity : AppCompatActivity() {
@@ -65,6 +63,12 @@ class ChatActivity : AppCompatActivity() {
                 true
             })
             popup.show()
+        }
+
+        binding.searchChat.setOnClickListener {
+            val intent = Intent(applicationContext, SearchChatActivity::class.java)
+            startActivity(intent)
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
         }
 
         initSendMessage()

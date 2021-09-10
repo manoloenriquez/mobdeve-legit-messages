@@ -9,7 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.LegitMessages">
-        <activity android:name=".ui.select_contact.SelectContactActivity"></activity>
+        <activity android:name=".ui.search_chat.SearchChatActivity"></activity>
+        <activity android:name=".ui.select_contact.SelectContactActivity" />
         <activity
             android:name=".ui.search_contact.SearchUserActivity"
             android:label="@string/title_activity_search_user"
