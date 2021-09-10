@@ -34,8 +34,9 @@ class MessageAdapter(private val list: ArrayList<Message>):
 
                 popup.setOnMenuItemClickListener(PopupMenu.OnMenuItemClickListener { item ->
                     when(item.itemId) {
-                        R.id.edit_message ->
-                            Toast.makeText(view.context, "Edit text", Toast.LENGTH_SHORT).show()
+                        R.id.edit_message ->{
+                            
+                        }
 
                         R.id.delete_message ->
                             Toast.makeText(view.context, "Delete text", Toast.LENGTH_SHORT).show()
