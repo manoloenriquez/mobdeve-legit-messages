@@ -36,8 +36,7 @@ class MessageAdapter(private val list: ArrayList<Message>):
                 popup.setOnMenuItemClickListener(PopupMenu.OnMenuItemClickListener { item ->
                     when(item.itemId) {
                         R.id.edit_message ->{
-                          val popup = PopupMenu(view.context, message)
-
+                            `
                         }
 
                         R.id.delete_message ->

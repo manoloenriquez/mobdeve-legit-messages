@@ -7,20 +7,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.mobdeve.s18.legitmessages.R
 
-class EditDialog: DialogFragment() {
+class EditDialog: BottomSheetDialogFragment() {
 
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        return activity?.let{
-            val alertBuilder = AlertDialog.Builder(it)
-
-            alertBuilder.setTitle("Select an option")
-//            alertBuilder.setItems(R.array.popup_array, DialogInterface.OnClickListener{dialog, index ->
-//                Toast.makeText(it, index.toString(), Toast.LENGTH_SHORT).show()
-//            })
-            alertBuilder.create()
-        } ?: throw IllegalStateException("Exception !! Activity is null !!")
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return inflater.inflate(R.layout.dialog_edit, container,false)
     }
+
 
 }
