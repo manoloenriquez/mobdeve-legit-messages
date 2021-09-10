@@ -16,7 +16,9 @@ import com.mobdeve.s18.legitmessages.databinding.ActivityChatBinding
 import com.mobdeve.s18.legitmessages.model.Database
 import com.mobdeve.s18.legitmessages.model.Message
 import com.mobdeve.s18.legitmessages.model.User
+import com.mobdeve.s18.legitmessages.ui.chat_info.ChatInfo
 import com.mobdeve.s18.legitmessages.ui.message.MessageAdapter
+import com.mobdeve.s18.legitmessages.ui.search_chat.SearchChatActivity
 import com.mobdeve.s18.legitmessages.ui.select_contact.SelectContactActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -113,6 +115,31 @@ class ChatActivity : AppCompatActivity() {
                 setAdapter()
                 binding.messageInput.text = null
             }
+        }
+
+        binding.chatInfoBtn.setOnClickListener {
+
+            val popup = PopupMenu(applicationContext, binding.chatInfoBtn)
+            popup.menuInflater.inflate(R.menu.chat_info, popup.menu)
+
+            popup.setOnMenuItemClickListener(PopupMenu.OnMenuItemClickListener { item ->
+                when(item.itemId) {
+                    R.id.search_chat -> {
+                        val intent = Intent(applicationContext, SearchChatActivity::class.java)
+                        startActivity(intent)
+                        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+                    }
+
+                    R.id.chat_info ->{
+                        val intent = Intent(applicationContext, ChatInfo::class.java)
+                        startActivity(intent)
+                        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+                    }
+                }
+                true
+            })
+            popup.show()
+
         }
     }
 
