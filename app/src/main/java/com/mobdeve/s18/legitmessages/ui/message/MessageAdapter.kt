@@ -1,6 +1,7 @@
 package com.mobdeve.s18.legitmessages.ui.message
 
-import android.content.Context
+import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,17 +9,15 @@ import android.widget.LinearLayout
 import android.widget.PopupMenu
 import android.widget.TextView
 import android.widget.Toast
-import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import com.mobdeve.s18.legitmessages.R
 import com.mobdeve.s18.legitmessages.model.Message
 import com.mobdeve.s18.legitmessages.model.User
+import com.mobdeve.s18.legitmessages.ui.select_contact.SelectContactActivity
 
 class MessageAdapter(private val list: ArrayList<Message>):
     RecyclerView.Adapter<MessageAdapter.MessageViewHolder>() {
 
-    private lateinit var context: Context
-    private val FragManager: FragmentManager? = null
     final var MSG_TYPE_LEFT = 0
     final var MSG_TYPE_RIGHT = 1
 
@@ -35,10 +34,8 @@ class MessageAdapter(private val list: ArrayList<Message>):
 
                 popup.setOnMenuItemClickListener(PopupMenu.OnMenuItemClickListener { item ->
                     when(item.itemId) {
-                        R.id.edit_message ->{
-                          val popup = PopupMenu(view.context, message)
-
-                        }
+                        R.id.edit_message ->
+                            Toast.makeText(view.context, "Edit text", Toast.LENGTH_SHORT).show()
 
                         R.id.delete_message ->
                             Toast.makeText(view.context, "Delete text", Toast.LENGTH_SHORT).show()
@@ -79,10 +76,6 @@ class MessageAdapter(private val list: ArrayList<Message>):
     }
 
     override fun getItemCount() = list.size
-
-}
-
-private fun View.setOnLongClickListener(function: (v: View) -> Unit) {
 
 }
 
