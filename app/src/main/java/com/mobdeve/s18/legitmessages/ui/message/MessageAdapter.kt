@@ -11,6 +11,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.mobdeve.s18.legitmessages.R
+import com.mobdeve.s18.legitmessages.model.Database
 import com.mobdeve.s18.legitmessages.model.Message
 import com.mobdeve.s18.legitmessages.model.User
 import com.mobdeve.s18.legitmessages.ui.select_contact.SelectContactActivity
@@ -27,6 +28,8 @@ class MessageAdapter(private val list: ArrayList<Message>):
         val messageBox: TextView = view.findViewById(R.id.show_message)
         val timeStamp: TextView = view.findViewById(R.id.time_stamp)
 
+        val db = Database()
+
         init {
             message.setOnLongClickListener{
                 val popup = PopupMenu(view.context, message)
@@ -34,13 +37,14 @@ class MessageAdapter(private val list: ArrayList<Message>):
 
                 popup.setOnMenuItemClickListener(PopupMenu.OnMenuItemClickListener { item ->
                     when(item.itemId) {
-                        R.id.edit_message ->{
-                            
+                        R.id.edit_message -> {
+                            Toast.makeText(view.context, "Edit text", Toast.LENGTH_SHORT).show()
+                            Log.i("Edit Messge", "editing...")
                         }
 
-                        R.id.delete_message ->
-                            Toast.makeText(view.context, "Delete text", Toast.LENGTH_SHORT).show()
-
+                        R.id.delete_message -> {
+//                            db.deleteMessage()
+                        }
                     }
                     true
                 })
