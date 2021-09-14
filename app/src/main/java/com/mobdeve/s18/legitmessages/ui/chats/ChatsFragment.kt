@@ -14,10 +14,12 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mobdeve.s18.legitmessages.R
 import com.mobdeve.s18.legitmessages.databinding.FragmentChatsBinding
+import com.mobdeve.s18.legitmessages.databinding.SelectGroupContactBinding
 import com.mobdeve.s18.legitmessages.model.Chat
 import com.mobdeve.s18.legitmessages.model.Database
 import com.mobdeve.s18.legitmessages.model.User
 import com.mobdeve.s18.legitmessages.ui.contacts.ContactAdapter
+import com.mobdeve.s18.legitmessages.ui.create_group.SelectGroupActivity
 import com.mobdeve.s18.legitmessages.ui.search_contact.SearchUserActivity
 import com.mobdeve.s18.legitmessages.ui.select_contact.SelectContactActivity
 import com.mobdeve.s18.legitmessages.util.DataHelper
@@ -52,7 +54,11 @@ class ChatsFragment : Fragment() {
                         activity?.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
                     }
 
-//                    R.id.new_group_chat ->
+                    R.id.new_group_chat ->{
+                        val intent = Intent(activity, SelectGroupActivity::class.java)
+                        startActivity(intent)
+                        activity?.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+                    }
 
 
                 }
