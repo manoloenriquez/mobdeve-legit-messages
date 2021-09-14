@@ -4,9 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mobdeve.s18.legitmessages.databinding.ActivitySelectContactBinding
-import com.mobdeve.s18.legitmessages.model.Database
 import com.mobdeve.s18.legitmessages.model.User
-import com.mobdeve.s18.legitmessages.ui.contacts.SelectContactAdapter
 
 private lateinit var selectAdapter: SelectContactAdapter
 private lateinit var binding: ActivitySelectContactBinding

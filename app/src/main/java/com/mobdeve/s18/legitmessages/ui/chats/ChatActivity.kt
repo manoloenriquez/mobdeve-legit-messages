@@ -33,6 +33,7 @@ class ChatActivity : AppCompatActivity() {
     private lateinit var messageAdapter: MessageAdapter
     private lateinit var linearLayoutManager: LinearLayoutManager
     private lateinit var messageList: ArrayList<Message>
+    private lateinit var chat_id: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,6 +41,7 @@ class ChatActivity : AppCompatActivity() {
         binding = ActivityChatBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        chat_id = intent.getStringExtra("uid").toString()
         messageList = ArrayList()
         setAdapter()
 
@@ -63,6 +65,32 @@ class ChatActivity : AppCompatActivity() {
 
                     R.id.text_to_speech ->
                         Toast.makeText(applicationContext, item.title, Toast.LENGTH_SHORT).show()
+                }
+                true
+            })
+            popup.show()
+        }
+
+        binding.chatInfoBtn.setOnClickListener {
+
+            val popup = PopupMenu(applicationContext, binding.chatInfoBtn)
+            popup.menuInflater.inflate(R.menu.chat_info, popup.menu)
+
+            popup.setOnMenuItemClickListener(PopupMenu.OnMenuItemClickListener { item ->
+                when(item.itemId) {
+                    R.id.search_chat -> {
+                        val intent = Intent(applicationContext, SearchChatActivity::class.java)
+                        intent.putExtra("chat_id", chat_id)
+
+                        startActivity(intent)
+                        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+                    }
+
+                    R.id.chat_info ->{
+                        val intent = Intent(applicationContext, ChatInfo::class.java)
+                        startActivity(intent)
+                        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+                    }
                 }
                 true
             })
@@ -115,31 +143,6 @@ class ChatActivity : AppCompatActivity() {
                 setAdapter()
                 binding.messageInput.text = null
             }
-        }
-
-        binding.chatInfoBtn.setOnClickListener {
-
-            val popup = PopupMenu(applicationContext, binding.chatInfoBtn)
-            popup.menuInflater.inflate(R.menu.chat_info, popup.menu)
-
-            popup.setOnMenuItemClickListener(PopupMenu.OnMenuItemClickListener { item ->
-                when(item.itemId) {
-                    R.id.search_chat -> {
-                        val intent = Intent(applicationContext, SearchChatActivity::class.java)
-                        startActivity(intent)
-                        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
-                    }
-
-                    R.id.chat_info ->{
-                        val intent = Intent(applicationContext, ChatInfo::class.java)
-                        startActivity(intent)
-                        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
-                    }
-                }
-                true
-            })
-            popup.show()
-
         }
     }
 
