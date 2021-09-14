@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mobdeve.s18.legitmessages.R
 import com.mobdeve.s18.legitmessages.databinding.ActivitySearchChatBinding
@@ -16,10 +17,11 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-private lateinit var messageAdapter: MessageAdapter
+private lateinit var messageAdapter: SearchChatAdapter
 private lateinit var binding: ActivitySearchChatBinding
 private var messageList = ArrayList<Message>()
 private val db = Database()
+private lateinit var chat_id: String
 
 class SearchChatActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,8 +30,9 @@ class SearchChatActivity : AppCompatActivity() {
         binding = ActivitySearchChatBinding.inflate(layoutInflater)
         binding.searchChatInput.addTextChangedListener(text)
         setContentView(binding.root)
+        chat_id = intent.getStringExtra("chat_id").toString()
 
-        messageAdapter = MessageAdapter(messageList)
+        messageAdapter = SearchChatAdapter(messageList)
         binding.searchChatInput.addTextChangedListener(text)
         binding.rvSearchChat.layoutManager = LinearLayoutManager(applicationContext)
     }
