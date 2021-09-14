@@ -9,11 +9,13 @@ import android.widget.LinearLayout
 import android.widget.PopupMenu
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.mobdeve.s18.legitmessages.R
 import com.mobdeve.s18.legitmessages.model.Database
 import com.mobdeve.s18.legitmessages.model.Message
 import com.mobdeve.s18.legitmessages.model.User
+import com.mobdeve.s18.legitmessages.ui.search_chat.SearchChatActivity
 import com.mobdeve.s18.legitmessages.ui.select_contact.SelectContactActivity
 
 class MessageAdapter(private val list: ArrayList<Message>):
@@ -21,6 +23,7 @@ class MessageAdapter(private val list: ArrayList<Message>):
 
     final var MSG_TYPE_LEFT = 0
     final var MSG_TYPE_RIGHT = 1
+    final var ownMessage: Boolean = false
 
     class MessageViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
@@ -29,29 +32,6 @@ class MessageAdapter(private val list: ArrayList<Message>):
         val timeStamp: TextView = view.findViewById(R.id.time_stamp)
 
         val db = Database()
-
-        init {
-            message.setOnLongClickListener{
-                val popup = PopupMenu(view.context, message)
-                popup.menuInflater.inflate(R.menu.chat_menu, popup.menu)
-
-                popup.setOnMenuItemClickListener(PopupMenu.OnMenuItemClickListener { item ->
-                    when(item.itemId) {
-                        R.id.edit_message -> {
-                            Toast.makeText(view.context, "Edit text", Toast.LENGTH_SHORT).show()
-                            Log.i("Edit Messge", "editing...")
-                        }
-
-                        R.id.delete_message -> {
-//                            db.deleteMessage()
-                        }
-                    }
-                    true
-                })
-                popup.show()
-                true
-            }
-        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MessageAdapter.MessageViewHolder {
@@ -71,11 +51,35 @@ class MessageAdapter(private val list: ArrayList<Message>):
     override fun onBindViewHolder(holder: MessageViewHolder, position: Int) {
         holder.messageBox.text = list[position].message
         holder.timeStamp.text = list[position].timeStampString()
+        val db = Database()
+        if(list[position].sender == User.currentUser?.uid.toString()){
+            holder.message.setOnLongClickListener { v: View ->
+                val popup = PopupMenu(v.context, holder.message)
+                popup.menuInflater.inflate(R.menu.chat_menu, popup.menu)
+                popup.setOnMenuItemClickListener(PopupMenu.OnMenuItemClickListener { item ->
+                    when(item.itemId) {
+                        R.id.edit_message -> {
+                            val intent = Intent(v.context, EditMessageActivity::class.java)
+                            intent.putExtra("message", holder.messageBox.text )
+                            v.context.startActivity(intent)
+                        }
+
+                        R.id.delete_message -> {
+//                            db.deleteMessage()
+                        }
+                    }
+                    true
+                })
+                popup.show()
+                true
+            }
+        }
     }
 
     override fun getItemViewType(position: Int): Int{
-        if(list[position].sender == User.currentUser?.uid.toString())
+        if(list[position].sender == User.currentUser?.uid.toString()) {
             return MSG_TYPE_RIGHT
+        }
         else
             return MSG_TYPE_LEFT
     }

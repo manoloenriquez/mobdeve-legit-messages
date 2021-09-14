@@ -9,7 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.LegitMessages">
-        <activity android:name=".ui.canvas.CanvasActivity"></activity>
+        <activity android:name=".ui.message.EditMessageActivity"></activity>
+        <activity android:name=".ui.canvas.CanvasActivity" />
         <activity android:name=".ui.chat_info.ChatInfo" />
         <activity android:name=".ui.search_chat.SearchChatActivity" />
         <activity android:name=".ui.select_contact.SelectContactActivity" />
