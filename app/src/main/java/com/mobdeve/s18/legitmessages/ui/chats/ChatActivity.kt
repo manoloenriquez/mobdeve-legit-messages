@@ -3,6 +3,7 @@ package com.mobdeve.s18.legitmessages.ui.chats
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.widget.PopupMenu
 import android.widget.Toast
@@ -34,6 +35,7 @@ class ChatActivity : AppCompatActivity() {
     private lateinit var linearLayoutManager: LinearLayoutManager
     private lateinit var messageList: ArrayList<Message>
     private lateinit var chat_id: String
+    private var disappear: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,9 +59,16 @@ class ChatActivity : AppCompatActivity() {
                     R.id.photo_video ->
                         Toast.makeText(applicationContext, item.title, Toast.LENGTH_SHORT).show()
 
-                    R.id.disappearing_messages ->
-                        Toast.makeText(applicationContext, item.title, Toast.LENGTH_SHORT).show()
-
+                    R.id.disappear ->{
+                        if(!disappear){
+                            disappear = true
+                            Toast.makeText(applicationContext, "Disappear is on", Toast.LENGTH_SHORT).show()
+                        }
+                        else{
+                            disappear = false
+                            Toast.makeText(applicationContext, "Disappear is off", Toast.LENGTH_SHORT).show()
+                        }
+                    }
                     R.id.drawing ->
                         Toast.makeText(applicationContext, item.title, Toast.LENGTH_SHORT).show()
 
@@ -141,6 +150,13 @@ class ChatActivity : AppCompatActivity() {
                     intent.getStringExtra("uid")?.let { it1 -> message.send(it1) }
                 }
                 setAdapter()
+                if(disappear){
+                    Handler().postDelayed({
+                        // delete message here
+                        Toast.makeText(applicationContext, "Delayed message", Toast.LENGTH_SHORT).show()
+                        setAdapter()
+                    }, 10000)
+                }
                 binding.messageInput.text = null
             }
         }
