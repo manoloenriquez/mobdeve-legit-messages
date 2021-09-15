@@ -21,7 +21,8 @@ import kotlinx.coroutines.launch
 
 
 
-class AddContactAdapter(private val list: ArrayList<User>): RecyclerView.Adapter<AddContactAdapter.AddContactViewHolder>() {
+class AddContactAdapter(private val list: ArrayList<User>, chatId: String): RecyclerView.Adapter<AddContactAdapter.AddContactViewHolder>() {
+    var chatId: String = chatId
 
     class AddContactViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val username: TextView = view.findViewById(R.id.contact_username)
@@ -31,6 +32,7 @@ class AddContactAdapter(private val list: ArrayList<User>): RecyclerView.Adapter
         lateinit var email: String
         lateinit var userName: String
         lateinit var uid: String
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AddContactViewHolder {
@@ -47,10 +49,14 @@ class AddContactAdapter(private val list: ArrayList<User>): RecyclerView.Adapter
         holder.uid = list[position].uid.toString()
 
         holder.contactData.setOnClickListener { v: View ->
+
+            // add user to participants list here
+            // chatId is already in parameters
             CoroutineScope(Dispatchers.Main).launch {
                 val intent = Intent(v.context, ChatInfo::class.java)
                 intent.putExtra("uid", holder.uid)
-//                v.context.startActivity(intent)
+                intent.putExtra("chat_id", chatId)
+                v.context.startActivity(intent)
                 (v.context as Activity).finish()
             }
         }

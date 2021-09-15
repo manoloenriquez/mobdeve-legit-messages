@@ -29,8 +29,9 @@ class ChatInfo : AppCompatActivity() {
             intent.action = null
         }
 
-
         binding = ActivityChatInfoBinding.inflate(layoutInflater)
+
+        binding.chatId.text = chatId
 
         linearLayoutManager = LinearLayoutManager(applicationContext)
         binding.rvParticipants.layoutManager = linearLayoutManager
@@ -57,8 +58,10 @@ class ChatInfo : AppCompatActivity() {
 
         binding.add.setOnClickListener {
             val intent = Intent(applicationContext, AddContactActivity::class.java)
+            intent.putExtra("chat_id", chatId)
             startActivity(intent)
             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+            finish()
         }
         setContentView(binding.root)
     }

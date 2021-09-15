@@ -16,11 +16,13 @@ class AddContactActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        chatId = intent.getStringExtra("chat_id").toString()
+
         binding = ActivityAddContactBinding.inflate(layoutInflater)
         linearLayoutManager = LinearLayoutManager(applicationContext)
         binding.rvContactList.layoutManager = linearLayoutManager
         val contactList = User.currentUser?.contacts
-        addContactAdapter = contactList?.let { AddContactAdapter(it) }!!
+        addContactAdapter = contactList?.let { AddContactAdapter(it, chatId) }!!
         binding.rvContactList.adapter = addContactAdapter
 
         setContentView(binding.root)
