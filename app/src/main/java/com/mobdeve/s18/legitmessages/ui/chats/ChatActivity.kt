@@ -36,6 +36,7 @@ class ChatActivity : AppCompatActivity() {
     private lateinit var messageList: ArrayList<Message>
     private lateinit var chat_id: String
     private var disappear: Boolean = false
+    val db = Database()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -153,9 +154,11 @@ class ChatActivity : AppCompatActivity() {
                 if(disappear){
                     Handler().postDelayed({
                         // delete message here
-                        Toast.makeText(applicationContext, "Delayed message", Toast.LENGTH_SHORT).show()
-                        setAdapter()
-                    }, 10000)
+                        if (message != null) {
+//                            db.deleteMessage(message.chatId, message.id)
+                        }
+//                        setAdapter()
+                    }, 2000)
                 }
                 binding.messageInput.text = null
             }
