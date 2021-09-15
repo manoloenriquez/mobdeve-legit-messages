@@ -9,17 +9,20 @@ open class Message {
     var sender: String = ""
     var message: String = ""
     var timeStamp: Timestamp
+    var id: String = ""
 
-    constructor(sender: String, message: String, timeStamp: Timestamp) {
+    constructor(sender: String, message: String, timeStamp: Timestamp, id: String) {
         this.sender = sender
         this.message = message
         this.timeStamp = timeStamp
+        this.id = id
     }
 
     constructor(sender: String, message: String) {
         this.sender = sender
         this.message = message
         this.timeStamp = Timestamp.now()
+
     }
 
 

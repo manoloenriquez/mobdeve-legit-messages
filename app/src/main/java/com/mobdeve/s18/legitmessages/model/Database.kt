@@ -233,7 +233,10 @@ class Database {
             "timeStamp" to message.timeStamp
         )
 
-        ref.collection("messages").add(data)
+        val task = ref.collection("messages").add(data)
+        task.addOnSuccessListener { result ->
+            message.id = result.id
+        }
     }
 
     fun editMessage(chatUid: String, messageUid: String, message: Message) {
@@ -295,7 +298,11 @@ class Database {
                     "timeStamp" to message.timeStamp
                 )
 
-                ref.collection("messages").add(data)
+                val task = ref.collection("messages").add(data)
+
+                task.addOnSuccessListener { result ->
+                    message.id = result.id
+                }
             }
         }
     }

@@ -191,7 +191,8 @@ class ChatActivity : AppCompatActivity() {
                         val message = Message(
                             sender,
                             data.get("message") as String,
-                            timeStamp
+                            timeStamp,
+                            document.id
                         )
 
                         messages.add(message)
