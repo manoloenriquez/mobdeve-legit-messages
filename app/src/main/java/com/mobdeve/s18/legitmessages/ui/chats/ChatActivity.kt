@@ -98,6 +98,8 @@ class ChatActivity : AppCompatActivity() {
 
                     R.id.chat_info ->{
                         val intent = Intent(applicationContext, ChatInfo::class.java)
+                        intent.putExtra("chat_id", chat_id)
+
                         startActivity(intent)
                         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
                     }

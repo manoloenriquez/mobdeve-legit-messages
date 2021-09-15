@@ -15,7 +15,6 @@ import com.mobdeve.s18.legitmessages.databinding.FragmentContactsBinding
 import com.mobdeve.s18.legitmessages.model.Database
 import com.mobdeve.s18.legitmessages.model.User
 import com.mobdeve.s18.legitmessages.ui.search_contact.SearchUserActivity
-import com.mobdeve.s18.legitmessages.util.DataHelper
 import kotlinx.coroutines.*
 import kotlinx.coroutines.Dispatchers.Main
 
@@ -31,7 +30,6 @@ class ContactsFragment : Fragment() {
         val currentUser = Firebase.auth.currentUser
         binding = FragmentContactsBinding.inflate(layoutInflater)
 
-        var dataHelper = DataHelper()
         linearLayoutManager = LinearLayoutManager(activity)
         binding.rvContactList.layoutManager = linearLayoutManager
 

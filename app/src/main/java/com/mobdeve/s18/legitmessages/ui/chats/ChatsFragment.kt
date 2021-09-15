@@ -22,7 +22,6 @@ import com.mobdeve.s18.legitmessages.ui.contacts.ContactAdapter
 import com.mobdeve.s18.legitmessages.ui.create_group.SelectGroupActivity
 import com.mobdeve.s18.legitmessages.ui.search_contact.SearchUserActivity
 import com.mobdeve.s18.legitmessages.ui.select_contact.SelectContactActivity
-import com.mobdeve.s18.legitmessages.util.DataHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
