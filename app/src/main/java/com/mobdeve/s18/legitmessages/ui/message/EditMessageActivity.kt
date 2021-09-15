@@ -25,8 +25,9 @@ class EditMessageActivity : AppCompatActivity() {
             val db = Database()
             val chatId = intent.getStringExtra("chatId").toString()
             val messageId = intent.getStringExtra("id").toString()
+            val message = binding.editInput.text.toString()
 
-            db.editMessage(chatId, messageId, "this message was edited!")
+            db.editMessage(chatId, messageId, message)
 
             finish()
         }
