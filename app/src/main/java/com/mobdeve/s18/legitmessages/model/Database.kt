@@ -225,6 +225,24 @@ class Database {
 
     }
 
+    suspend fun createChat(participants: ArrayList<String>): String {
+        val userRefs: ArrayList<DocumentReference> = ArrayList()
+
+        for (participant in participants) {
+            val ref = db.collection("users").document(participant)
+
+            userRefs.add(ref)
+        }
+
+        val data = hashMapOf(
+            "participants" to userRefs
+        )
+
+        val result = db.collection("chats").add(data).await()
+
+        return result.id
+    }
+
     fun addMessage(chatUid: String, message: Message) {
         val ref = db.collection("chats").document(chatUid)
         val data = hashMapOf(

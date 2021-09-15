@@ -8,8 +8,13 @@ import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.mobdeve.s18.legitmessages.R
 import android.widget.TextView
+import com.google.firebase.firestore.ktx.firestore
+import com.mobdeve.s18.legitmessages.model.Database
 import com.mobdeve.s18.legitmessages.model.User
 import com.mobdeve.s18.legitmessages.ui.chats.ChatActivity
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class SelectContactAdapter(private val list: ArrayList<User>): RecyclerView.Adapter<SelectContactAdapter.SelectContactViewHolder>() {
 
@@ -23,18 +28,39 @@ class SelectContactAdapter(private val list: ArrayList<User>): RecyclerView.Adap
         lateinit var uid: String
 
         init {
+            val db = Database()
+
             contactData.setOnClickListener { v: View ->
-//                val position: Int = adapterPosition
-                val intent = Intent(view.context, ChatActivity::class.java)
+                CoroutineScope(Dispatchers.Main).launch {
+                    val intent = Intent(view.context, ChatActivity::class.java)
 
-                intent.putExtra("uid", uid)
-                intent.putExtra("uid", uid)
-                intent.putExtra("chat_displayName", username.text)
-                // already creates a message thread in firebase when you send a message, pero no participants lang
-                // checks if message thread already exists with this person else make new thread
 
-                v.context.startActivity(intent)
+
+                    // already creates a message thread in firebase when you send a message, pero no participants lang
+                    // checks if message thread already exists with this person else make new thread
+
+                    val participants: ArrayList<String> = ArrayList()
+                    User.currentUser?.uid?.let { participants.add(it) }
+                    participants.add(uid)
+
+                    val chatId = db.createChat(participants)
+
+                    intent.putExtra("uid", chatId)
+                    intent.putExtra("chat_displayName", username.text)
+
+                    v.context.startActivity(intent)
+                }
+
+
             }
+        }
+
+        fun checkChatExists(): Boolean {
+            val chats = User.currentUser?.chats
+
+
+
+            return false
         }
     }
 
