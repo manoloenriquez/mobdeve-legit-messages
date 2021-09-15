@@ -7,6 +7,7 @@ import android.widget.Toast
 import com.mobdeve.s18.legitmessages.R
 import com.mobdeve.s18.legitmessages.databinding.ActivityChatBinding
 import com.mobdeve.s18.legitmessages.databinding.ActivityEditMessageBinding
+import com.mobdeve.s18.legitmessages.model.Database
 import com.mobdeve.s18.legitmessages.ui.chats.ChatActivity
 
 class EditMessageActivity : AppCompatActivity() {
@@ -21,6 +22,12 @@ class EditMessageActivity : AppCompatActivity() {
         binding.editInput.setText(intent.getStringExtra("message").toString())
 
         binding.saveBtn.setOnClickListener {
+            val db = Database()
+            val chatId = intent.getStringExtra("chatId").toString()
+            val messageId = intent.getStringExtra("id").toString()
+
+            db.editMessage(chatId, messageId, "this message was edited!")
+
             finish()
         }
     }

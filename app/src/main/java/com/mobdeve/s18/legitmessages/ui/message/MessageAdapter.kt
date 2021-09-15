@@ -23,7 +23,6 @@ class MessageAdapter(private val list: ArrayList<Message>):
 
     final var MSG_TYPE_LEFT = 0
     final var MSG_TYPE_RIGHT = 1
-    final var ownMessage: Boolean = false
 
     class MessageViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
@@ -61,16 +60,23 @@ class MessageAdapter(private val list: ArrayList<Message>):
                         R.id.edit_message -> {
                             val intent = Intent(v.context, EditMessageActivity::class.java)
                             intent.putExtra("message", holder.messageBox.text )
+                            intent.putExtra("chatId", list[position].chatId)
+                            intent.putExtra("id", list[position].id)
                             v.context.startActivity(intent)
                         }
 
                         R.id.delete_message -> {
-//                            db.deleteMessage()
+                            db.deleteMessage(list[position].chatId, list[position].id)
                         }
                     }
                     true
                 })
                 popup.show()
+                true
+            }
+        } else {
+            holder.message.setOnLongClickListener { v ->
+                Toast.makeText(v.context, "You can't modify this message.", Toast.LENGTH_SHORT).show()
                 true
             }
         }

@@ -10,12 +10,14 @@ open class Message {
     var message: String = ""
     var timeStamp: Timestamp
     var id: String = ""
+    var chatId: String = ""
 
-    constructor(sender: String, message: String, timeStamp: Timestamp, id: String) {
+    constructor(sender: String, message: String, timeStamp: Timestamp, id: String, chatId: String) {
         this.sender = sender
         this.message = message
         this.timeStamp = timeStamp
         this.id = id
+        this.chatId = chatId
     }
 
     constructor(sender: String, message: String) {

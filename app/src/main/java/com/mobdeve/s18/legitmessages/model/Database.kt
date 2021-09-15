@@ -239,7 +239,7 @@ class Database {
         }
     }
 
-    fun editMessage(chatUid: String, messageUid: String, message: Message) {
+    fun editMessage(chatUid: String, messageUid: String, message: String) {
         val ref =
             db.collection("chats")
                 .document(chatUid)
@@ -247,9 +247,8 @@ class Database {
                 .document(messageUid)
 
         val data = hashMapOf(
-            "message" to message.message,
-            "sender" to db.collection("users").document(message.sender),
-            "timeStamp" to message.timeStamp
+            "message" to message,
+            "sender" to User.currentUser?.uid?.let { db.collection("users").document(it) },
         )
 
         ref.update(data)

@@ -192,7 +192,8 @@ class ChatActivity : AppCompatActivity() {
                             sender,
                             data.get("message") as String,
                             timeStamp,
-                            document.id
+                            document.id,
+                            chatId
                         )
 
                         messages.add(message)
