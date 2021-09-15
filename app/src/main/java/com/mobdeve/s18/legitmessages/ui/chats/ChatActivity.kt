@@ -153,12 +153,11 @@ class ChatActivity : AppCompatActivity() {
                 setAdapter()
                 if(disappear){
                     Handler().postDelayed({
-                        // delete message here
                         if (message != null) {
-//                            db.deleteMessage(message.chatId, message.id)
+                            intent.getStringExtra("uid")?.let { it1 -> db.deleteMessage(it1, message.id) }
                         }
-//                        setAdapter()
-                    }, 2000)
+                        setAdapter()
+                    }, 10000)
                 }
                 binding.messageInput.text = null
             }
