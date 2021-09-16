@@ -2,31 +2,67 @@ package com.mobdeve.s18.legitmessages.services
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.ContentValues.TAG
+import android.content.Context
+import android.content.Intent
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
+import androidx.core.app.NotificationCompat
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
+import com.mobdeve.s18.legitmessages.MainActivity
+import java.util.*
 
 class Notifications : FirebaseMessagingService() {
+    lateinit var title: String
+    lateinit var message: String
+    var CHANNEL_ID = "CHANNEL"
 
-    var TAG = "FCMService"
-    override fun onNewToken(p0: String) {
-        Log.d(TAG, p0)
-        super.onNewToken(p0)
+    lateinit var manager: NotificationManager
+
+    override fun onNewToken(token: String) {
+        super.onNewToken(token)
+        Log.d("message", "new Token: $token")
     }
 
-    override fun onMessageReceived(p0: RemoteMessage) {
-        super.onMessageReceived(p0)
+    override fun onMessageReceived(remoteMessage: RemoteMessage) {
+        super.onMessageReceived(remoteMessage)
+        title = remoteMessage.data["title"]!!
+        message= remoteMessage.data["Message"]!!
 
-        Log.d(TAG, "Payloads : ${p0.data}")
-
-        if(p0.notification != null){
-            val title = p0.notification!!.title
-            val body = p0.notification!!.body
-
-            Log.d(TAG, "Title - $title, Body - $body")
+        if(message == null){
+            message = Objects.requireNonNull(remoteMessage.notification!!.body)!!
         }
+        var manager = this.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
+        sendNotification()
     }
+
+    private fun sendNotification() {
+        var intent = Intent(application, MainActivity::class.java)
+
+        if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O){
+            var channel = NotificationChannel(CHANNEL_ID,
+                "pushnotification",
+                NotificationManager.IMPORTANCE_HIGH)
+            manager.createNotificationChannel(channel)
+        }
+
+        var builder = NotificationCompat.Builder(this, CHANNEL_ID)
+            .setContentTitle(title)
+            .setAutoCancel(true)
+            .setContentText(message)
+
+        var pendingintent = PendingIntent.getActivity(
+            applicationContext,
+            0,
+            intent, PendingIntent.FLAG_ONE_SHOT)
+
+        builder.setContentIntent(pendingintent)
+        manager.notify(0, builder.build())
+
+    }
+
 }

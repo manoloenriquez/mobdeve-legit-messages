@@ -54,6 +54,9 @@ class MessageAdapter(private val list: ArrayList<Message>, private var tts: Text
         holder.messageBox.text = list[position].message
         holder.timeStamp.text = list[position].timeStampString()
         val db = Database()
+
+
+
         if(list[position].sender == User.currentUser?.uid.toString()){
             holder.message.setOnLongClickListener { v: View ->
                 val popup = PopupMenu(v.context, holder.message)
@@ -77,7 +80,7 @@ class MessageAdapter(private val list: ArrayList<Message>, private var tts: Text
                         R.id.text_to_speech -> {
                             tts = TextToSpeech(v.context, TextToSpeech.OnInitListener { status ->
                                 if(status != TextToSpeech.ERROR)
-                                    tts.speak(list[position].message, TextToSpeech.QUEUE_FLUSH, null)
+                                    tts.speak(list[position].message, TextToSpeech.QUEUE_ADD, null, "")
                             })
                         }
                     }

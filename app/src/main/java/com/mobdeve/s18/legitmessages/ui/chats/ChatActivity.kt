@@ -20,6 +20,7 @@ import com.mobdeve.s18.legitmessages.model.Message
 import com.mobdeve.s18.legitmessages.model.User
 import com.mobdeve.s18.legitmessages.ui.canvas.CanvasActivity
 import com.mobdeve.s18.legitmessages.ui.chat_info.ChatInfo
+import com.mobdeve.s18.legitmessages.ui.image_picker.ImagePickerActivity
 import com.mobdeve.s18.legitmessages.ui.message.MessageAdapter
 import com.mobdeve.s18.legitmessages.ui.search_chat.SearchChatActivity
 import com.mobdeve.s18.legitmessages.ui.select_contact.SelectContactActivity
@@ -30,7 +31,7 @@ import kotlinx.coroutines.withContext
 import java.util.*
 import kotlin.collections.ArrayList
 
-class ChatActivity : AppCompatActivity() {
+class ChatActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
 
     private lateinit var binding: ActivityChatBinding
     private lateinit var messageAdapter: MessageAdapter
@@ -39,7 +40,7 @@ class ChatActivity : AppCompatActivity() {
     private lateinit var chat_id: String
     private var disappear: Boolean = false
     val db = Database()
-    private lateinit var tts: TextToSpeech
+    private  var tts: TextToSpeech? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,8 +51,8 @@ class ChatActivity : AppCompatActivity() {
         chat_id = intent.getStringExtra("uid").toString()
         messageList = ArrayList()
 
+        tts = TextToSpeech(this, this)
         setAdapter()
-
 
         binding.chatHeader.text = intent.getStringExtra("chat_displayName")
 
@@ -62,8 +63,11 @@ class ChatActivity : AppCompatActivity() {
 
             popup.setOnMenuItemClickListener(PopupMenu.OnMenuItemClickListener { item ->
                 when(item.itemId) {
-                    R.id.photo_video ->
-                        Toast.makeText(applicationContext, item.title, Toast.LENGTH_SHORT).show()
+                    R.id.photo_video -> {
+                        val intent = Intent(applicationContext, ImagePickerActivity::class.java)
+                        startActivity(intent)
+                        overridePendingTransition(R.anim.slide_up, R.anim.no_change)
+                    }
 
                     R.id.disappear ->{
                         if(!disappear){
@@ -119,6 +123,8 @@ class ChatActivity : AppCompatActivity() {
         setSupportActionBar(binding.chatToolBar)
 
     }
+
+//    override private fun onActivityResult()
 
 //    override fun onStart() {
 //        super.onStart()
@@ -217,5 +223,13 @@ class ChatActivity : AppCompatActivity() {
                 setAdapter()
             }
         }
+    }
+
+    override fun onInit(status: Int) {
+
+        if(status == TextToSpeech.SUCCESS){
+            val result = tts!!.setLanguage(Locale.US)
+        }
+
     }
 }
