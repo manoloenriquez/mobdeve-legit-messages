@@ -33,8 +33,8 @@ class SelectGroupActivity : AppCompatActivity() {
                 Toast.makeText(applicationContext,"Please select more participants", Toast.LENGTH_LONG).show()
             else{
                 // create group chat here
-                    db.addChat(selectedUsers)
-                Toast.makeText(applicationContext, "Participants: $selectedUsers", Toast.LENGTH_LONG).show()
+                db.addChat(selectedUsers)
+                finish()
             }
 
         }
