@@ -34,6 +34,7 @@ class SearchChatActivity : AppCompatActivity() {
 
         messageAdapter = SearchChatAdapter(messageList)
         binding.searchChatInput.addTextChangedListener(text)
+        binding.rvSearchChat.adapter = messageAdapter
         binding.rvSearchChat.layoutManager = LinearLayoutManager(applicationContext)
     }
 }
@@ -46,7 +47,9 @@ private var text = object: TextWatcher {
     override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
 
         CoroutineScope(Dispatchers.Main).launch {
-
+            messageList = db.searchChat(chat_id, s.toString())
+            messageAdapter = SearchChatAdapter(messageList)
+            binding.rvSearchChat.adapter = messageAdapter
         }
     }
 

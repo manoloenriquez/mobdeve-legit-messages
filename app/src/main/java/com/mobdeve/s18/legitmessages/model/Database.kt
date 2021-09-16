@@ -11,6 +11,7 @@ import com.google.firebase.storage.ktx.storage
 import com.mobdeve.s18.legitmessages.ui.chats.ChatAdapter
 import kotlinx.coroutines.*
 import kotlinx.coroutines.tasks.await
+import org.w3c.dom.Document
 import java.io.File
 import kotlin.coroutines.suspendCoroutine
 
@@ -376,5 +377,33 @@ class Database {
         }
 
         return chatId
+    }
+
+    suspend fun searchChat(chatUid: String, key: String): ArrayList<Message> {
+        val ref =
+            db.collection("chats").document(chatUid).collection("messages")
+
+        val result =
+            ref.whereGreaterThanOrEqualTo("message", key)
+                .whereLessThanOrEqualTo("message", "${key}\uF7FF")
+                .get()
+                .await()
+
+        val messages: ArrayList<Message> = ArrayList()
+
+        result.documents.forEach { document ->
+            val data = document.data
+            val senderRef: DocumentReference = data?.get("sender") as DocumentReference
+            val body: String = data.get("message") as String
+            val timestamp: Timestamp = data.get("timeStamp") as Timestamp
+
+            val message = Message(senderRef.id, body, timestamp, document.id, chatUid)
+
+            messages.add(message)
+        }
+
+        Log.i("Search Message", "$messages")
+
+        return messages
     }
 }

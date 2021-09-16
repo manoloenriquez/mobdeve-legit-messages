@@ -35,7 +35,7 @@ class SearchChatAdapter(private val list: ArrayList<Message>): RecyclerView.Adap
     override fun onBindViewHolder(holder: SearchAdapterViewHolder, position: Int) {
         holder.username.text = list[position].sender
         holder.message.text = list[position].message
-        holder.date.text = list[position].timeStamp.toDate().toString()
+        holder.date.text = list[position].timeStampString()
     }
 
     override fun getItemCount() = list.size
