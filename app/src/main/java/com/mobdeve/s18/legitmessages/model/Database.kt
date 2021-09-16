@@ -333,8 +333,8 @@ class Database {
         val data = snapshot.data
 
         if (data != null) {
-            for (participant in (data.get("participants") as ArrayList<String>)) {
-                val userRef = db.collection("users").document(participant)
+            for (participant in (data.get("participants") as ArrayList<DocumentReference>)) {
+                val userRef = db.collection("users").document(participant.id)
                 val userSnapshot = userRef.get().await()
                 val userData = userSnapshot.data
 
@@ -405,5 +405,26 @@ class Database {
         Log.i("Search Message", "$messages")
 
         return messages
+    }
+
+    suspend fun removeParticipant(chatUid: String, participants: ArrayList<String>) {
+        val ref = db.collection("chats").document(chatUid)
+        val snapshot = ref.get().await()
+        val data = snapshot.data
+
+        val oldParticipants: ArrayList<DocumentReference> = data?.get("participants") as ArrayList<DocumentReference>
+        val newParticipants: ArrayList<DocumentReference> = ArrayList()
+
+        oldParticipants.forEach { participant ->
+            if (!participants.contains(participant.id)) {
+                newParticipants.add(participant)
+            }
+        }
+
+        val toUpdate = hashMapOf(
+            "participants" to newParticipants
+        )
+
+        ref.update(toUpdate as Map<String, Any>)
     }
 }

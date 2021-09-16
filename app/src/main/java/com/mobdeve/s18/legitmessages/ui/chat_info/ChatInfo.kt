@@ -8,15 +8,20 @@ import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mobdeve.s18.legitmessages.R
 import com.mobdeve.s18.legitmessages.databinding.ActivityChatInfoBinding
+import com.mobdeve.s18.legitmessages.model.Database
 import com.mobdeve.s18.legitmessages.model.User
 import com.mobdeve.s18.legitmessages.ui.chats.ChatActivity
 import com.mobdeve.s18.legitmessages.ui.create_group.SelectGroupAdapter
 import com.mobdeve.s18.legitmessages.ui.select_contact.SelectContactAdapter
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 private lateinit var selectAdapter: SelectGroupAdapter
 private lateinit var binding: ActivityChatInfoBinding
 private lateinit var linearLayoutManager: LinearLayoutManager
 private var chatId: String = ""
+val db = Database()
 
 class ChatInfo : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,24 +40,16 @@ class ChatInfo : AppCompatActivity() {
 
         linearLayoutManager = LinearLayoutManager(applicationContext)
         binding.rvParticipants.layoutManager = linearLayoutManager
-        var userList = ArrayList<User>()
-        userList.add(User("1", "testuser@gmail.com", "Test User"))
-        userList.add(User("2", "testuser@gmail.com", "Test User"))
-        userList.add(User("3", "testuser@gmail.com", "Test User"))
-        selectAdapter = SelectGroupAdapter(userList)
-        binding.rvParticipants.adapter = selectAdapter
 
-        if(userList.size <= 2){
-            binding.btnLayout.visibility = View.GONE
-        }
 
         binding.remove.setOnClickListener {
-            var selectedUsers: ArrayList<String> = selectAdapter.getSelected() as ArrayList<String>
-            if(selectedUsers.size == 0)
+            val selectedUsers: ArrayList<String> = selectAdapter.getSelected() as ArrayList<String>
+            if (selectedUsers.size == 0)
                 Toast.makeText(applicationContext,"Please select a user", Toast.LENGTH_LONG).show()
-            else{
-                //remove participants from gc here
-                Toast.makeText(applicationContext, "Participants: $selectedUsers", Toast.LENGTH_LONG).show()
+            else {
+                CoroutineScope(Dispatchers.Main).launch {
+                    db.removeParticipant(chatId, selectedUsers)
+                }
             }
         }
 
@@ -69,5 +66,20 @@ class ChatInfo : AppCompatActivity() {
     override fun onBackPressed() {
         super.onBackPressed()
         this.finish()
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        CoroutineScope(Dispatchers.Main).launch {
+            val participants = db.getParticipants(chatId)
+
+            selectAdapter = SelectGroupAdapter(participants)
+            binding.rvParticipants.adapter = selectAdapter
+
+            if(participants.size <= 2){
+                binding.btnLayout.visibility = View.GONE
+            }
+        }
     }
 }
