@@ -68,6 +68,10 @@ class MessageAdapter(private val list: ArrayList<Message>):
                         R.id.delete_message -> {
                             db.deleteMessage(list[position].chatId, list[position].id)
                         }
+
+                        R.id.text_to_speech -> {
+                            Toast.makeText(v.context, "Text to Speech", Toast.LENGTH_SHORT).show()
+                        }
                     }
                     true
                 })

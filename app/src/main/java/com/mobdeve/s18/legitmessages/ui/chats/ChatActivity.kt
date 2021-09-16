@@ -76,10 +76,6 @@ class ChatActivity : AppCompatActivity() {
                         startActivity(intent)
                         overridePendingTransition(R.anim.slide_up, R.anim.no_change)
                     }
-
-
-                    R.id.text_to_speech ->
-                        Toast.makeText(applicationContext, item.title, Toast.LENGTH_SHORT).show()
                 }
                 true
             })

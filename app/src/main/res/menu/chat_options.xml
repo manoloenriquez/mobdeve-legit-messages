@@ -7,19 +7,9 @@
         android:title="Photo or Video"
         app:showAsAction="never"/>
 
-<!--    <item-->
-<!--        android:id="@+id/disappearing_messages"-->
-<!--        android:title="Disappearing Message"-->
-<!--        app:showAsAction="never"/>-->
-
     <item
         android:id="@+id/drawing"
         android:title="Drawing"
-        app:showAsAction="never"/>
-
-    <item
-        android:id="@+id/text_to_speech"
-        android:title="Text to Speech"
         app:showAsAction="never"/>
 
     <item android:id="@+id/disappear"
