@@ -1,6 +1,7 @@
 package com.mobdeve.s18.legitmessages.ui.message
 
 import android.content.Intent
+import android.speech.tts.TextToSpeech
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -17,8 +18,10 @@ import com.mobdeve.s18.legitmessages.model.Message
 import com.mobdeve.s18.legitmessages.model.User
 import com.mobdeve.s18.legitmessages.ui.search_chat.SearchChatActivity
 import com.mobdeve.s18.legitmessages.ui.select_contact.SelectContactActivity
+import java.util.*
+import kotlin.collections.ArrayList
 
-class MessageAdapter(private val list: ArrayList<Message>):
+class MessageAdapter(private val list: ArrayList<Message>, private var tts: TextToSpeech):
     RecyclerView.Adapter<MessageAdapter.MessageViewHolder>() {
 
     final var MSG_TYPE_LEFT = 0
@@ -55,6 +58,8 @@ class MessageAdapter(private val list: ArrayList<Message>):
             holder.message.setOnLongClickListener { v: View ->
                 val popup = PopupMenu(v.context, holder.message)
                 popup.menuInflater.inflate(R.menu.chat_menu, popup.menu)
+
+
                 popup.setOnMenuItemClickListener(PopupMenu.OnMenuItemClickListener { item ->
                     when(item.itemId) {
                         R.id.edit_message -> {
@@ -70,7 +75,10 @@ class MessageAdapter(private val list: ArrayList<Message>):
                         }
 
                         R.id.text_to_speech -> {
-                            Toast.makeText(v.context, "Text to Speech", Toast.LENGTH_SHORT).show()
+                            tts = TextToSpeech(v.context, TextToSpeech.OnInitListener { status ->
+                                if(status != TextToSpeech.ERROR)
+                                    tts.speak(list[position].message, TextToSpeech.QUEUE_FLUSH, null)
+                            })
                         }
                     }
                     true
