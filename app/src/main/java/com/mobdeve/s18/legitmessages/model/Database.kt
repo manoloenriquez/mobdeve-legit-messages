@@ -12,6 +12,7 @@ import com.mobdeve.s18.legitmessages.ui.chats.ChatAdapter
 import kotlinx.coroutines.*
 import kotlinx.coroutines.tasks.await
 import java.io.File
+import kotlin.coroutines.suspendCoroutine
 
 class Database {
 
@@ -322,5 +323,34 @@ class Database {
                 }
             }
         }
+    }
+
+    suspend fun getParticipants(chatUid: String): ArrayList<User> {
+        val participants: ArrayList<User> = ArrayList()
+        val ref = db.collection("chats").document(chatUid)
+        val snapshot = ref.get().await()
+        val data = snapshot.data
+
+        if (data != null) {
+            for (participant in (data.get("participants") as ArrayList<String>)) {
+                val userRef = db.collection("users").document(participant)
+                val userSnapshot = userRef.get().await()
+                val userData = userSnapshot.data
+
+                val user = User(
+                    userSnapshot.id,
+                    userData?.get("email") as String?,
+                    "${userData?.get("firstName")} ${userData?.get("lastName")}",
+                    userData?.get("firstName") as String,
+                    userData.get("lastName") as String,
+                    userData.get("username") as String
+
+                )
+
+                participants.add(user)
+            }
+        }
+
+        return participants
     }
 }
