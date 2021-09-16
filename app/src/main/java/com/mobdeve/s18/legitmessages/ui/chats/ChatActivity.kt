@@ -17,6 +17,7 @@ import com.mobdeve.s18.legitmessages.databinding.ActivityChatBinding
 import com.mobdeve.s18.legitmessages.model.Database
 import com.mobdeve.s18.legitmessages.model.Message
 import com.mobdeve.s18.legitmessages.model.User
+import com.mobdeve.s18.legitmessages.ui.canvas.CanvasActivity
 import com.mobdeve.s18.legitmessages.ui.chat_info.ChatInfo
 import com.mobdeve.s18.legitmessages.ui.message.MessageAdapter
 import com.mobdeve.s18.legitmessages.ui.search_chat.SearchChatActivity
@@ -70,8 +71,12 @@ class ChatActivity : AppCompatActivity() {
                             Toast.makeText(applicationContext, "Disappear is off", Toast.LENGTH_SHORT).show()
                         }
                     }
-                    R.id.drawing ->
-                        Toast.makeText(applicationContext, item.title, Toast.LENGTH_SHORT).show()
+                    R.id.drawing ->{
+                        val intent = Intent(applicationContext, CanvasActivity::class.java)
+                        startActivity(intent)
+                        overridePendingTransition(R.anim.slide_up, R.anim.no_change)
+                    }
+
 
                     R.id.text_to_speech ->
                         Toast.makeText(applicationContext, item.title, Toast.LENGTH_SHORT).show()
