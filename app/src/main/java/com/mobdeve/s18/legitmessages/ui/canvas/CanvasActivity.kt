@@ -3,6 +3,7 @@ package com.mobdeve.s18.legitmessages.ui.canvas
 import android.content.ContentValues
 import android.content.Intent
 import android.graphics.*
+import android.media.Image
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.DisplayMetrics
@@ -11,6 +12,7 @@ import android.view.View
 import android.view.View.OnTouchListener
 import android.view.WindowManager
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -19,9 +21,10 @@ import java.io.FileNotFoundException
 
 
 class CanvasActivity : AppCompatActivity(), OnTouchListener, View.OnClickListener {
+
     private var iv_canvas: ImageView? = null
-    private var btn_save: Button? = null
-    private var btn_open: Button? = null
+    private var save_btn: ImageButton? = null
+    private var clear_btn: ImageButton? = null
     private var canvas: Canvas? = null
     private var paint: Paint? = null
     private var bitmap: Bitmap? = null
@@ -34,21 +37,30 @@ class CanvasActivity : AppCompatActivity(), OnTouchListener, View.OnClickListene
     private var downY = 0.0f
     private var upX = 0.0f
     private var upY = 0.0f
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContentView(R.layout.activity_canvas)
         iv_canvas = findViewById<View>(R.id.iv_canvas) as ImageView
+        save_btn = findViewById<View>(R.id.save_btn) as ImageButton
+        clear_btn = findViewById<View>(R.id.clear_btn) as ImageButton
+
+        save_btn!!.setOnClickListener(this)
+        clear_btn!!.setOnClickListener(this)
 
         val currentDisplay = DisplayMetrics()
         windowManager.defaultDisplay.getMetrics(currentDisplay)
         windowHeight = (currentDisplay.heightPixels * 2).toFloat()
         windowWidth = (currentDisplay.widthPixels * 2).toFloat()
+
         val windowManager = getSystemService(WINDOW_SERVICE) as WindowManager
         val display2 = windowManager.defaultDisplay
         val outPoint = Point()
         display2.getSize(outPoint)
         var width = 0
         var height = 0
+
         if (outPoint.y > outPoint.x) {
             height = outPoint.y
             width = outPoint.x
@@ -61,19 +73,20 @@ class CanvasActivity : AppCompatActivity(), OnTouchListener, View.OnClickListene
             height,
             Bitmap.Config.ARGB_8888
         )
+
         canvas = Canvas(bitmap as Bitmap)
         paint = Paint()
         paint!!.color = penColor
         paint!!.strokeWidth = 10f
         paint!!.style = Paint.Style.STROKE
+
         iv_canvas!!.setImageBitmap(bitmap)
         iv_canvas!!.setOnTouchListener(this)
         iv_canvas!!.invalidate()
     }
 
     override fun onTouch(view: View, motionEvent: MotionEvent): Boolean {
-        val action = motionEvent.action
-        when (action) {
+        when (motionEvent.action) {
             MotionEvent.ACTION_DOWN -> {
                 downX = motionEvent.x
                 downY = motionEvent.y
@@ -100,41 +113,33 @@ class CanvasActivity : AppCompatActivity(), OnTouchListener, View.OnClickListene
         return true
     }
 
-    override fun onClick(v: View?) {
-        TODO("Not yet implemented")
+    override fun onClick(view: View) {
+        when (view.id) {
+            R.id.save_btn -> {
+                val imageFileUri = contentResolver.insert(
+                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                    ContentValues()
+                )
+                try {
+                    val imageFileOS = contentResolver
+                        .openOutputStream(imageFileUri!!)
+                    if (alteredImage != null) {
+                        alteredImage!!.compress(Bitmap.CompressFormat.JPEG, 90, imageFileOS)
+                    } else {
+                        bitmap!!.compress(Bitmap.CompressFormat.JPEG, 90, imageFileOS)
+                    }
+                    Toast.makeText(this, "Drawing Saved", Toast.LENGTH_LONG).show()
+                } catch (fnfe: FileNotFoundException) {
+                    fnfe.printStackTrace()
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
+            R.id.clear_btn -> {
+                canvas?.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR)
+            }
+        }
     }
-
-//    override fun onClick(view: View) {
-//        when (view.id) {
-//            R.id.btn_save -> {
-//                val imageFileUri = contentResolver.insert(
-//                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-//                    ContentValues()
-//                )
-//                try {
-//                    val imageFileOS = contentResolver
-//                        .openOutputStream(imageFileUri!!)
-//                    if (alteredImage != null) {
-//                        alteredImage!!.compress(Bitmap.CompressFormat.JPEG, 90, imageFileOS)
-//                    } else {
-//                        bitmap!!.compress(Bitmap.CompressFormat.JPEG, 90, imageFileOS)
-//                    }
-//                    Toast.makeText(this, "Drawing Saved", Toast.LENGTH_LONG).show()
-//                } catch (fnfe: FileNotFoundException) {
-//                    fnfe.printStackTrace()
-//                } catch (e: Exception) {
-//                    e.printStackTrace()
-//                }
-//            }
-//            R.id.btn_open -> {
-//                val choosePictureIntent = Intent(
-//                    Intent.ACTION_PICK,
-//                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI
-//                )
-//                startActivityForResult(choosePictureIntent, 0)
-//            }
-//        }
-//    }
 
 //    override fun onActivityResult(requestCode: Int, resultCode: Int, intent: Intent?) {
 //        super.onActivityResult(requestCode, resultCode, intent)

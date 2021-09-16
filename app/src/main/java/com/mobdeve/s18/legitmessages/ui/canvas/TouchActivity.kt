@@ -25,9 +25,10 @@ class TouchActivity : AppCompatActivity(), View.OnClickListener {
     private var windowHeight = 0f
     private var alteredImage: Bitmap? = null
     private var matrix: Matrix? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_touch)
+        setContentView(R.layout.activity_canvas)
         init()
         val currentDisplay = DisplayMetrics()
         windowManager.defaultDisplay.getMetrics(currentDisplay)
