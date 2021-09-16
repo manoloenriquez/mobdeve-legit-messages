@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mobdeve.s18.legitmessages.databinding.ActivitySelectGroupBinding
+import com.mobdeve.s18.legitmessages.model.Database
 import com.mobdeve.s18.legitmessages.model.User
 import com.mobdeve.s18.legitmessages.ui.select_contact.SelectContactAdapter
 
@@ -12,6 +13,7 @@ private lateinit var binding: ActivitySelectGroupBinding
 private lateinit var linearLayoutManager: LinearLayoutManager
 private var contactList = ArrayList<User>()
 private lateinit var selectGroup: SelectGroupAdapter
+val db = Database()
 
 class SelectGroupActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,11 +28,12 @@ class SelectGroupActivity : AppCompatActivity() {
         binding.rvContactList.adapter = selectGroup
 
         binding.createGroup.setOnClickListener {
-            var selectedUsers: ArrayList<String> = selectGroup.getSelected() as ArrayList<String>
+            var selectedUsers: ArrayList<String> = selectGroup.getSelected()
             if(selectedUsers.size < 2)
                 Toast.makeText(applicationContext,"Please select more participants", Toast.LENGTH_LONG).show()
             else{
                 // create group chat here
+                    db.addChat(selectedUsers)
                 Toast.makeText(applicationContext, "Participants: $selectedUsers", Toast.LENGTH_LONG).show()
             }
 

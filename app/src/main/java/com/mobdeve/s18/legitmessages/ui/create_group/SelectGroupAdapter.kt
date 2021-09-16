@@ -12,7 +12,11 @@ import com.mobdeve.s18.legitmessages.model.User
 
 class SelectGroupAdapter(private val list: ArrayList<User>): RecyclerView.Adapter<SelectGroupAdapter.SelectGroupViewHolder>() {
 
-    private var selectedUsers: ArrayList<String> = ArrayList<String>()
+    private var selectedUsers: ArrayList<String> = ArrayList()
+
+    init {
+        User.currentUser?.uid?.let { selectedUsers.add(it) }
+    }
 
     class SelectGroupViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val username: TextView = view.findViewById(R.id.contact_username)
@@ -32,7 +36,7 @@ class SelectGroupAdapter(private val list: ArrayList<User>): RecyclerView.Adapte
         return SelectGroupViewHolder(view)
     }
 
-    public fun getSelected(): List<String>{
+    fun getSelected(): ArrayList<String>{
         return selectedUsers
     }
 
