@@ -353,4 +353,28 @@ class Database {
 
         return participants
     }
+
+    suspend fun getChatIdWithContact(contactUid: String): String? {
+        val userUid = User.currentUser?.uid ?: return null
+        var chatId: String? = null
+
+        val userRef = db.collection("users").document(userUid)
+        val contactRef = db.collection("users").document(contactUid)
+
+        val ref = db.collection("chats")
+                    .whereArrayContainsAny("participants", listOf(userRef, contactRef))
+
+        val snapshot = ref.get().await()
+
+        snapshot.documents.forEach { document ->
+            val data = document.data
+            val participants = data?.get("participants") as ArrayList<DocumentReference>
+
+            if (participants.contains(userRef) && participants.contains(contactRef) && participants.size == 2) {
+                chatId = document.id
+            }
+        }
+
+        return chatId
+    }
 }

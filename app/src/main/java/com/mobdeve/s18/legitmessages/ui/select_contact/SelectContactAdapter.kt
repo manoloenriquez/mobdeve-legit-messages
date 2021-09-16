@@ -1,6 +1,7 @@
 package com.mobdeve.s18.legitmessages.ui.select_contact
 
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,15 +27,14 @@ class SelectContactAdapter(private val list: ArrayList<User>): RecyclerView.Adap
         lateinit var email: String
         lateinit var userName: String
         lateinit var uid: String
+        val db = Database()
 
         init {
-            val db = Database()
+
 
             contactData.setOnClickListener { v: View ->
                 CoroutineScope(Dispatchers.Main).launch {
                     val intent = Intent(view.context, ChatActivity::class.java)
-
-
 
                     // already creates a message thread in firebase when you send a message, pero no participants lang
                     // checks if message thread already exists with this person else make new thread
@@ -43,7 +43,12 @@ class SelectContactAdapter(private val list: ArrayList<User>): RecyclerView.Adap
                     User.currentUser?.uid?.let { participants.add(it) }
                     participants.add(uid)
 
-                    val chatId = db.createChat(participants)
+                    var chatId = checkChatExists()
+                    if (chatId == null) {
+                        chatId = db.createChat(participants)
+                    }
+
+                    Log.i("Create", "$chatId")
 
                     intent.putExtra("uid", chatId)
                     intent.putExtra("chat_displayName", username.text)
@@ -55,12 +60,10 @@ class SelectContactAdapter(private val list: ArrayList<User>): RecyclerView.Adap
             }
         }
 
-        fun checkChatExists(): Boolean {
-            val chats = User.currentUser?.chats
+        suspend fun checkChatExists(): String? {
+            val chatId: String? = db.getChatIdWithContact(uid)
 
-
-
-            return false
+            return chatId
         }
     }
 
