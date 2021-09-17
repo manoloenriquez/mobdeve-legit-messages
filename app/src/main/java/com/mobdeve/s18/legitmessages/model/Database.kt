@@ -415,8 +415,8 @@ class Database {
         val oldParticipants: ArrayList<DocumentReference> = data?.get("participants") as ArrayList<DocumentReference>
         val newParticipants: ArrayList<DocumentReference> = ArrayList()
 
-        oldParticipants.forEach { participant ->
-            if (!participants.contains(participant.id)) {
+        oldParticipants.forEach old@ { participant ->
+            if (!participants.contains(participant.id) || participant.id == User.currentUser?.uid) {
                 newParticipants.add(participant)
             }
         }

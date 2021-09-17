@@ -3,6 +3,7 @@ package com.mobdeve.s18.legitmessages.ui.chat_info
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -43,10 +44,11 @@ class ChatInfo : AppCompatActivity() {
 
 
         binding.remove.setOnClickListener {
-            val selectedUsers: ArrayList<String> = selectAdapter.getSelected() as ArrayList<String>
+            val selectedUsers: ArrayList<String> = selectAdapter.getSelected()
             if (selectedUsers.size == 0)
                 Toast.makeText(applicationContext,"Please select a user", Toast.LENGTH_LONG).show()
             else {
+                Log.i("Remove", "$selectedUsers")
                 CoroutineScope(Dispatchers.Main).launch {
                     db.removeParticipant(chatId, selectedUsers)
                 }
