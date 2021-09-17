@@ -425,6 +425,24 @@ class Database {
             "participants" to newParticipants
         )
 
-        ref.update(toUpdate as Map<String, Any>)
+        ref.update(toUpdate as Map<String, Any>).await()
+    }
+
+    suspend fun addParticipant(chatUid: String, participantId: String) {
+        val chatRef = db.collection("chats").document(chatUid)
+        val userRef = db.collection("users").document(participantId)
+
+        val chatDocument = chatRef.get().await()
+        val chatData = chatDocument.data
+
+        val participants: ArrayList<DocumentReference> = chatData?.get("participants") as ArrayList<DocumentReference>
+
+        participants.add(userRef)
+
+        val toUpdate = hashMapOf(
+            "participants" to participants
+        )
+
+        chatRef.update(toUpdate as Map<String, Any>).await()
     }
 }

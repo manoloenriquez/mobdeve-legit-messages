@@ -53,6 +53,8 @@ class AddContactAdapter(private val list: ArrayList<User>, chatId: String): Recy
             // add user to participants list here
             // chatId is already in parameters
             CoroutineScope(Dispatchers.Main).launch {
+                db.addParticipant(chatId, holder.uid)
+
                 val intent = Intent(v.context, ChatInfo::class.java)
                 intent.putExtra("uid", holder.uid)
                 intent.putExtra("chat_id", chatId)
