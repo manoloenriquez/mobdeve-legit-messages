@@ -13,17 +13,15 @@ import com.google.firebase.Timestamp
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.google.gson.Gson
 import com.mobdeve.s18.legitmessages.R
 import com.mobdeve.s18.legitmessages.databinding.ActivityChatBinding
-import com.mobdeve.s18.legitmessages.model.Database
-import com.mobdeve.s18.legitmessages.model.Message
-import com.mobdeve.s18.legitmessages.model.User
+import com.mobdeve.s18.legitmessages.model.*
 import com.mobdeve.s18.legitmessages.ui.canvas.CanvasActivity
 import com.mobdeve.s18.legitmessages.ui.chat_info.ChatInfo
 import com.mobdeve.s18.legitmessages.ui.image_picker.ImagePickerActivity
 import com.mobdeve.s18.legitmessages.ui.message.MessageAdapter
 import com.mobdeve.s18.legitmessages.ui.search_chat.SearchChatActivity
-import com.mobdeve.s18.legitmessages.ui.select_contact.SelectContactActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -41,6 +39,7 @@ class ChatActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     private var disappear: Boolean = false
     val db = Database()
     private  var tts: TextToSpeech? = null
+    val topic = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -230,6 +229,5 @@ class ChatActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         if(status == TextToSpeech.SUCCESS){
             val result = tts!!.setLanguage(Locale.US)
         }
-
     }
 }

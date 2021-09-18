@@ -12,6 +12,10 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
 import com.mobdeve.s18.legitmessages.R
 import com.mobdeve.s18.legitmessages.databinding.FragmentChatsBinding
 import com.mobdeve.s18.legitmessages.databinding.SelectGroupContactBinding
@@ -59,7 +63,6 @@ class ChatsFragment : Fragment() {
                         activity?.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
                     }
 
-
                 }
                 true
             })
@@ -80,5 +83,4 @@ class ChatsFragment : Fragment() {
         }
 
     }
-
 }

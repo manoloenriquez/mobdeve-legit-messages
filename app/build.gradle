@@ -61,8 +61,10 @@ dependencies {
     implementation platform('com.google.firebase:firebase-bom:28.3.1')
     implementation 'com.google.firebase:firebase-firestore-ktx'
     implementation 'com.squareup.retrofit2:retrofit:2.3.0'
-//    implementation 'com.squareup.retrofit:converter-gson:2.3.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
     implementation 'com.google.firebase:firebase-messaging-ktx'
+    implementation 'com.android.volley:volley:1.1.1'
+
     implementation 'com.google.firebase:firebase-auth-ktx'
     implementation 'com.google.firebase:firebase-storage-ktx'
     implementation("androidx.recyclerview:recyclerview:1.2.1")
@@ -73,12 +75,11 @@ dependencies {
     // Crashlytics dependencies
     implementation platform('com.google.firebase:firebase-bom:28.4.1')
     implementation 'com.google.firebase:firebase-crashlytics-ktx'
+
+    // Cloud Messaging
+    implementation 'com.google.firebase:firebase-messaging-ktx'
     implementation 'com.google.firebase:firebase-analytics-ktx'
 
-    // Image picker
-//    implementation 'com.fxn769:pix:1.5.4'
 
-    // Image compressor
-//    implementaion 'com.iceteck.silicompressorr:silicompressor:2.2.3'
 
 }
