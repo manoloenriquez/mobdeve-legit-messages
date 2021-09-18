@@ -1,6 +1,7 @@
 package com.mobdeve.s18.legitmessages.ui.message
 
 import android.content.Intent
+import android.os.Build
 import android.speech.tts.TextToSpeech
 import android.util.Log
 import android.view.LayoutInflater
@@ -79,8 +80,10 @@ class MessageAdapter(private val list: ArrayList<Message>, private var tts: Text
 
                         R.id.text_to_speech -> {
                             tts = TextToSpeech(v.context, TextToSpeech.OnInitListener { status ->
-                                if(status != TextToSpeech.ERROR)
-                                    tts.speak(list[position].message, TextToSpeech.QUEUE_ADD, null, "")
+                                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+                                    tts.speak(list[position].message, TextToSpeech.QUEUE_FLUSH, null, "")
+                                else
+                                    Toast.makeText(v.context, "ERROR", Toast.LENGTH_SHORT).show()
                             })
                         }
                     }

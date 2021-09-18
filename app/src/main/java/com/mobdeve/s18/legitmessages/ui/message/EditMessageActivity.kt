@@ -36,4 +36,5 @@ class EditMessageActivity : AppCompatActivity() {
             finish()
         }
     }
+
 }

@@ -52,6 +52,7 @@ class ChatInfo : AppCompatActivity() {
                 CoroutineScope(Dispatchers.Main).launch {
                     db.removeParticipant(chatId, selectedUsers)
                 }
+                finish()
             }
         }
 
