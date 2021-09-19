@@ -1,19 +1,19 @@
 package com.mobdeve.s18.legitmessages.model
 
+import android.graphics.Bitmap
 import android.net.Uri
 import android.util.Log
+import androidx.core.graphics.drawable.toDrawable
+import androidx.core.net.toFile
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
-import com.mobdeve.s18.legitmessages.ui.chats.ChatAdapter
 import kotlinx.coroutines.*
 import kotlinx.coroutines.tasks.await
-import org.w3c.dom.Document
 import java.io.File
-import kotlin.coroutines.suspendCoroutine
 
 class Database {
 
@@ -299,31 +299,49 @@ class Database {
         db.collection("chats").add(data)
     }
 
-    fun addImageMessage(chatUid: String, message: ImageMessage) {
-        val img = Uri.fromFile(message.file)
+    suspend fun addImageMessage(chatUid: String, message: ImageMessage) {
+        val img = message.uri
+        val file = File(img.path!!)
         val storageRef = storage.reference
-        val imgRef = storageRef.child("$chatUid/${message.file.name}")
+        val imgRef = storageRef.child("$chatUid/${file.name}")
 
         val uploadTask = imgRef.putFile(img)
 
-        uploadTask.addOnSuccessListener { snapshot ->
-            imgRef.downloadUrl.addOnCompleteListener { url ->
-                Log.i("URL", url.toString())
+        uploadTask.await()
 
-                val ref = db.collection("chats").document(chatUid)
-                val data = hashMapOf(
-                    "image" to url.toString(),
-                    "sender" to db.collection("users").document(message.sender),
-                    "timeStamp" to message.timeStamp
-                )
+        val url = imgRef.downloadUrl.await()
 
-                val task = ref.collection("messages").add(data)
+        Log.i("URL", url.toString())
 
-                task.addOnSuccessListener { result ->
-                    message.id = result.id
-                }
-            }
-        }
+        val ref = db.collection("chats").document(chatUid)
+        val data = hashMapOf(
+            "image" to url.toString(),
+            "sender" to db.collection("users").document(message.sender),
+            "timeStamp" to message.timeStamp
+        )
+
+        val result = ref.collection("messages").add(data).await()
+        message.id = result.id
+
+
+//        uploadTask.addOnSuccessListener { snapshot ->
+//            imgRef.downloadUrl.addOnCompleteListener { url ->
+//                Log.i("URL", url.toString())
+//
+//                val ref = db.collection("chats").document(chatUid)
+//                val data = hashMapOf(
+//                    "image" to url.toString(),
+//                    "sender" to db.collection("users").document(message.sender),
+//                    "timeStamp" to message.timeStamp
+//                )
+//
+//                val task = ref.collection("messages").add(data)
+//
+//                task.addOnSuccessListener { result ->
+//                    message.id = result.id
+//                }
+//            }
+//        }
     }
 
     suspend fun getParticipants(chatUid: String): ArrayList<User> {

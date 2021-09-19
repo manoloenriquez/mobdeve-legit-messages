@@ -17,6 +17,8 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.mobdeve.s18.legitmessages.R
+import com.mobdeve.s18.legitmessages.model.ImageMessage
+import com.mobdeve.s18.legitmessages.model.User
 import java.io.FileNotFoundException
 
 
@@ -125,10 +127,18 @@ class CanvasActivity : AppCompatActivity(), OnTouchListener, View.OnClickListene
                         .openOutputStream(imageFileUri!!)
                     if (alteredImage != null) {
                         alteredImage!!.compress(Bitmap.CompressFormat.JPEG, 90, imageFileOS)
+                        val msg: ImageMessage? =
+                            User.currentUser?.uid?.let { ImageMessage(it, imageFileUri) }
+
+                        msg?.send("lQf81P0aX6KLmHEDmSHC")
                     } else {
                         bitmap!!.compress(Bitmap.CompressFormat.JPEG, 90, imageFileOS)
+                        val msg: ImageMessage? = User.currentUser?.uid?.let { ImageMessage(it, imageFileUri) }
+                        msg?.send("lQf81P0aX6KLmHEDmSHC")
                     }
                     Toast.makeText(this, "Drawing Saved", Toast.LENGTH_LONG).show()
+
+
                 } catch (fnfe: FileNotFoundException) {
                     fnfe.printStackTrace()
                 } catch (e: Exception) {

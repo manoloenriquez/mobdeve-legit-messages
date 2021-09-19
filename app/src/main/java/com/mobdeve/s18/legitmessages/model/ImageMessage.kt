@@ -1,12 +1,19 @@
 package com.mobdeve.s18.legitmessages.model
 
-import java.io.File
+import android.graphics.Bitmap
+import android.net.Uri
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
-class ImageMessage(sender: String, val file: File) : Message(sender, "") {
+class ImageMessage(sender: String, val uri: Uri) : Message(sender, "") {
 
     override fun send(chatId: String) {
         val db = Database()
+        val instance = this
 
-        db.addImageMessage(chatId, this)
+        CoroutineScope(Dispatchers.Main).launch {
+            db.addImageMessage(chatId, instance)
+        }
     }
 }

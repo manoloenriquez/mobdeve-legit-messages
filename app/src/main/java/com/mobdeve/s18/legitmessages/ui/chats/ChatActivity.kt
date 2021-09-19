@@ -1,6 +1,7 @@
 package com.mobdeve.s18.legitmessages.ui.chats
 
 import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
@@ -26,6 +27,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.lang.Exception
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -192,13 +194,35 @@ class ChatActivity : AppCompatActivity() {
 
                         val timeStamp = data.get("timeStamp") as Timestamp
 
-                        val message = Message(
-                            sender,
-                            data.get("message") as String,
-                            timeStamp,
-                            document.id,
-                            chatId
-                        )
+                        var message: Message
+
+                        try {
+                            message = Message(
+                                sender,
+                                data.get("message") as String,
+                                timeStamp,
+                                document.id,
+                                chatId
+                            )
+                        } catch (e: Exception) {
+//                            message = Message(
+//                                sender,
+//                                data.get("img") as String,
+//                                timeStamp,
+//                                document.id,
+//                                chatId
+//                            )
+                            val uri: Uri = Uri.parse(data.get("image") as String)
+
+                            message = ImageMessage(
+                                sender,
+                                uri
+                            )
+
+                            message.timeStamp = timeStamp
+                            message.id = document.id
+                            message.chatId = chatId
+                        }
 
                         messages.add(message)
                     }
