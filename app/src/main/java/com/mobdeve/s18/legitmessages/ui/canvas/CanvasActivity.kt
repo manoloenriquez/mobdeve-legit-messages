@@ -157,43 +157,4 @@ class CanvasActivity : AppCompatActivity(), OnTouchListener, View.OnClickListene
             }
         }
     }
-
-//    override fun onActivityResult(requestCode: Int, resultCode: Int, intent: Intent?) {
-//        super.onActivityResult(requestCode, resultCode, intent)
-//        if (resultCode == RESULT_OK) {
-//            val imageFileUri = intent!!.data
-//            try {
-//                val bmpFactoryOptions = BitmapFactory.Options()
-//                bmpFactoryOptions.inJustDecodeBounds = true
-//                bitmap = BitmapFactory.decodeStream(
-//                    contentResolver
-//                        .openInputStream(imageFileUri!!), null, bmpFactoryOptions
-//                )
-//                val widthRatio =
-//                    Math.ceil((bmpFactoryOptions.outWidth / windowWidth).toDouble()).toInt()
-//                val heightRatio =
-//                    Math.ceil((bmpFactoryOptions.outHeight / windowHeight).toDouble()).toInt()
-//                if (heightRatio > widthRatio) {
-//                    bmpFactoryOptions.inSampleSize = heightRatio
-//                } else {
-//                    bmpFactoryOptions.inSampleSize = widthRatio
-//                }
-//                bmpFactoryOptions.inJustDecodeBounds = false
-//                bitmap = BitmapFactory.decodeStream(
-//                    contentResolver
-//                        .openInputStream(imageFileUri), null, bmpFactoryOptions
-//                )
-//                alteredImage = Bitmap.createBitmap(bitmap!!.width, bitmap!!.height, bitmap!!.config)
-//                canvas = Canvas(alteredImage)
-//                matrix = Matrix()
-//                canvas!!.drawBitmap(bitmap!!, matrix!!, paint)
-//                iv_canvas!!.setImageBitmap(alteredImage)
-//                iv_canvas!!.invalidate()
-//            } catch (fnfe: FileNotFoundException) {
-//                fnfe.printStackTrace()
-//            } catch (e: Exception) {
-//                e.printStackTrace()
-//            }
-//        }
-//    }
 }

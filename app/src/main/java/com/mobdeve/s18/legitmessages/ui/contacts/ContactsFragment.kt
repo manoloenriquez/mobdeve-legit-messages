@@ -33,13 +33,6 @@ class ContactsFragment : Fragment() {
         linearLayoutManager = LinearLayoutManager(activity)
         binding.rvContactList.layoutManager = linearLayoutManager
 
-//        CoroutineScope(Main).launch {
-//            val contactList = currentUser?.let { db.getUserContacts(it.uid) }
-//            contactAdapter = contactList?.let { ContactAdapter(it) }!!
-//
-//            binding.rvContactList.adapter = contactAdapter
-//        }
-
         val contactList = User.currentUser?.contacts
         contactAdapter = contactList?.let { ContactAdapter(it) }!!
         binding.rvContactList.adapter = contactAdapter

@@ -41,7 +41,6 @@ class FirebaseMessagingService : FirebaseMessagingService() {
     }
 
     private fun sendRegistrationToServer(token: String?) {
-        // TODO: Implement this method to send token to your app server.
         Log.d(TAG, "sendRegistrationTokenToServer($token)")
     }
 
@@ -56,7 +55,6 @@ class FirebaseMessagingService : FirebaseMessagingService() {
             intent.putExtra("uid", topic)
         }
 
-        val uniqueInt = (System.currentTimeMillis() and 0xfffffff).toInt()
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         val pendingIntent = PendingIntent.getActivity(this, 0, intent,
             PendingIntent.FLAG_UPDATE_CURRENT)

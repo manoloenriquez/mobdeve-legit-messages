@@ -36,9 +36,6 @@ class SelectContactAdapter(private val list: ArrayList<User>): RecyclerView.Adap
                 CoroutineScope(Dispatchers.Main).launch {
                     val intent = Intent(view.context, ChatActivity::class.java)
 
-                    // already creates a message thread in firebase when you send a message, pero no participants lang
-                    // checks if message thread already exists with this person else make new thread
-
                     val participants: ArrayList<String> = ArrayList()
                     User.currentUser?.uid?.let { participants.add(it) }
                     participants.add(uid)

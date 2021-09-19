@@ -79,7 +79,6 @@ class MessageAdapter(private val list: ArrayList<Message>, context: Context):
     override fun onBindViewHolder(holder: MessageViewHolder, position: Int) {
 
         if(list[position] is ImageMessage){
-//            holder.imageBox.setImageBitmap(getBitmapFromURL((list[position] as ImageMessage).uri))
             Picasso.get().load((list[position] as ImageMessage).uri).into(holder.imageBox)
             holder.imageBox.visibility = View.VISIBLE
             holder.messageBox.visibility = View.GONE

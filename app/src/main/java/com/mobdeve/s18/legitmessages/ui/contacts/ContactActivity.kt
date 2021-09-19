@@ -52,10 +52,6 @@ class ContactActivity : AppCompatActivity() {
                 if (User.currentUser?.uid?.let { it1 -> db.deleteContact(it1, contactUid) } == true) {
                     Toast.makeText(applicationContext, "Successfully deleted", Toast.LENGTH_SHORT).show()
                 }
-
-//                val intent = Intent(applicationContext, MainActivity::class.java)
-//                startActivity(intent)
-//                finish()
             }
         }
     }

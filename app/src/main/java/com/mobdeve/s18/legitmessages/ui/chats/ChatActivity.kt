@@ -41,7 +41,6 @@ class ChatActivity : AppCompatActivity() {
     private var disappear: Boolean = false
     val db = Database()
     private  var tts: TextToSpeech? = null
-    val topic = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,13 +50,6 @@ class ChatActivity : AppCompatActivity() {
 
         chat_id = intent.getStringExtra("uid").toString()
         messageList = ArrayList()
-//
-//        tts = TextToSpeech(this,) { status ->
-//            Log.i("TTS", "Initialized TTS")
-//            if(status == TextToSpeech.SUCCESS){
-//                val result = tts!!.setLanguage(Locale.US)
-//            }
-//        }
         setAdapter()
 
         binding.chatHeader.text = intent.getStringExtra("chat_displayName")
@@ -133,7 +125,6 @@ class ChatActivity : AppCompatActivity() {
     }
 
     fun setAdapter(){
-//        messageAdapter = tts?.let { MessageAdapter(messageList , it) }!!
         messageAdapter = MessageAdapter(messageList, applicationContext)
         binding.rvChat.adapter = messageAdapter
         linearLayoutManager = LinearLayoutManager(applicationContext)
@@ -207,13 +198,6 @@ class ChatActivity : AppCompatActivity() {
                                 chatId
                             )
                         } catch (e: Exception) {
-//                            message = Message(
-//                                sender,
-//                                data.get("img") as String,
-//                                timeStamp,
-//                                document.id,
-//                                chatId
-//                            )
                             val uri: Uri = Uri.parse(data.get("image") as String)
 
                             message = ImageMessage(

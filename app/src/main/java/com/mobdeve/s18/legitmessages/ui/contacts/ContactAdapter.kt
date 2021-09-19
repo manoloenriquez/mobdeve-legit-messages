@@ -24,7 +24,6 @@ class ContactAdapter(private val list: ArrayList<User>): RecyclerView.Adapter<Co
 
         init {
             contactData.setOnClickListener { v: View ->
-//                val position: Int = adapterPosition
                 val intent = Intent(view.context, ContactActivity::class.java)
 
                 intent.putExtra("uid", uid)

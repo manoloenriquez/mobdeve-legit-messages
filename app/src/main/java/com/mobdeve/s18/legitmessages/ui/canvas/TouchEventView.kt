@@ -16,18 +16,6 @@ class TouchEventView(context: Context, attrs: AttributeSet?) :
     AppCompatImageView(context, attrs) {
     private val paint = Paint()
     private val path = Path()
-//    var gestureDetector: GestureDetector
-
-//    private inner class GestureListener : SimpleOnGestureListener() {
-//        // event when double tap occurs
-//        override fun onDoubleTap(e: MotionEvent): Boolean {
-//            val x = e.x
-//            val y = e.y
-//            path.reset()
-//            Toast.makeText(context, "Double Tap >> Tapped at: ($x,$y)", Toast.LENGTH_SHORT).show()
-//            return true
-//        }
-//    }
 
     override fun onDraw(canvas: Canvas) {
         canvas.drawPath(path, paint)
@@ -46,13 +34,11 @@ class TouchEventView(context: Context, attrs: AttributeSet?) :
             }
             else -> return false
         }
-//        gestureDetector.onTouchEvent(event)
         invalidate()
         return true
     }
 
     init {
-//        gestureDetector = GestureDetector(context, GestureListener())
         paint.isAntiAlias = true
         paint.strokeWidth = 6f
         paint.color = Color.BLACK

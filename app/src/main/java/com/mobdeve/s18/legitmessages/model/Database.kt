@@ -30,17 +30,6 @@ class Database {
         user.uid?.let { db.collection("users").document(it).set(map) }
     }
 
-//    fun getUser(uid: String) {
-//        db.collection("users").document(uid).get()
-//            .addOnSuccessListener { document ->
-//                if (document == null) {
-//                    return@addOnSuccessListener
-//                }
-//
-//                Log.i("Database", "User: ${document.data}")
-//            }
-//    }
-
     fun updateUser(user: User) {
         val map = hashMapOf(
             "username" to user.username,
@@ -144,13 +133,6 @@ class Database {
     suspend fun addContact(currentUid: String, contactUid: String): Boolean {
         val contactRef: DocumentReference = db.collection("users").document(contactUid)
         val currentUserRef = db.collection("users").document(currentUid)
-
-        // Check if contact exists already
-//        currentUserRef
-//            .collection("contacts")
-//            .whereEqualTo("user", contactRef)
-//            .get()
-//            .await()
 
         // Add to contact list
         val map = hashMapOf(

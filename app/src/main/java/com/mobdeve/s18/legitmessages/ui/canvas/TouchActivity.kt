@@ -57,63 +57,12 @@ class TouchActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun init() {
-//        btn_open = findViewById<View>(R.id.btn_open) as Button
-//        btn_save = findViewById<View>(R.id.btn_save) as Button
         drawing_pad = findViewById<View>(R.id.drawing_pad) as TouchEventView
         btn_save!!.setOnClickListener(this)
         btn_open!!.setOnClickListener(this)
     }
 
-    override fun onClick(v: View) {
-//        when (v.id) {
-//            R.id.btn_open -> {
-//                Log.d("TouchActivity", "Button Open")
-//                val choosePictureIntent = Intent(
-//                    Intent.ACTION_PICK,
-//                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI
-//                )
-//                startActivityForResult(choosePictureIntent, 0)
-//            }
-//            R.id.btn_save -> Log.d("TouchActivity", "Button Save")
-//        }
-    }
+    override fun onClick(v: View?) {
 
-//    override fun onActivityResult(requestCode: Int, resultCode: Int, intent: Intent?) {
-//        super.onActivityResult(requestCode, resultCode, intent)
-//        if (resultCode == RESULT_OK) {
-//            val imageFileUri = intent!!.data
-//            try {
-//                val bmpFactoryOptions = BitmapFactory.Options()
-//                bmpFactoryOptions.inJustDecodeBounds = true
-//                bitmap = BitmapFactory.decodeStream(
-//                    contentResolver
-//                        .openInputStream(imageFileUri!!), null, bmpFactoryOptions
-//                )
-//                val widthRatio =
-//                    Math.ceil((bmpFactoryOptions.outWidth / windowWidth).toDouble()).toInt()
-//                val heightRatio =
-//                    Math.ceil((bmpFactoryOptions.outHeight / windowHeight).toDouble()).toInt()
-//                if (heightRatio > widthRatio) {
-//                    bmpFactoryOptions.inSampleSize = heightRatio
-//                } else {
-//                    bmpFactoryOptions.inSampleSize = widthRatio
-//                }
-//                bmpFactoryOptions.inJustDecodeBounds = false
-//                bitmap = BitmapFactory.decodeStream(
-//                    contentResolver
-//                        .openInputStream(imageFileUri), null, bmpFactoryOptions
-//                )
-//                alteredImage = Bitmap.createBitmap(bitmap!!.width, bitmap!!.height, bitmap!!.config)
-//                canvas = Canvas(alteredImage)
-//                matrix = Matrix()
-//                canvas!!.drawBitmap(bitmap!!, matrix!!, paint)
-//                drawing_pad.setImageBitmap(alteredImage)
-//                drawing_pad.invalidate()
-//            } catch (fnfe: FileNotFoundException) {
-//                Log.e("TouchActivity", fnfe.message!!)
-//            } catch (e: Exception) {
-//                Log.e("TouchActivity", e.message!!)
-//            }
-//        }
-//    }
+    }
 }

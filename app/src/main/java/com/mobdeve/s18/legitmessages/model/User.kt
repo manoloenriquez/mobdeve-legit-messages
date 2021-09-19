@@ -4,7 +4,6 @@ class User (val uid: String?, val email: String?, var displayName: String?){
     var username: String = ""
     var firstName: String = ""
     var lastName: String = ""
-//    lateinit var contacts: Map<String, User>
     var contacts: ArrayList<User> = ArrayList()
     var chats: ArrayList<Chat> = ArrayList()
 

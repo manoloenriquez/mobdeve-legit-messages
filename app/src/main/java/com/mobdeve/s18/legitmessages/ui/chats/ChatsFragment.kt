@@ -64,7 +64,6 @@ class ChatsFragment : Fragment() {
                         startActivity(intent)
                         activity?.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
                     }
-
                 }
                 true
             })
@@ -91,7 +90,6 @@ class ChatsFragment : Fragment() {
                             msg = getString(R.string.msg_subscribe_failed)
                         }
                         Log.d("Topic", msg)
-                        Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show()
                     }
             }
         }

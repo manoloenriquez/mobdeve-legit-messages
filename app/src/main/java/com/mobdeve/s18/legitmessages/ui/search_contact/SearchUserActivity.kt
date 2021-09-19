@@ -48,10 +48,6 @@ class SearchUserActivity : Activity() {
         }
 
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            //key up function for search bar to show matching contact usernames/displaynames
-
-            //update the context of adapter after finding matching users
-
 
             CoroutineScope(Main).launch {
                 contactList = db.searchUser(s.toString())

@@ -38,14 +38,12 @@ class MainActivity : AppCompatActivity() {
 
             val msg = getString(R.string.msg_token_fmt, token)
             Log.i("Messaging Service", msg)
-            Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
         })
 
         CoroutineScope(Dispatchers.Main).launch {
             val auth = Firebase.auth
             val db = Database()
             if (auth.currentUser != null) {
-//            CoroutineScope(Dispatchers.Main).launch {
                 val userRef = db.getUser(auth.currentUser!!.uid)
                 val data = userRef.data
 
@@ -60,11 +58,9 @@ class MainActivity : AppCompatActivity() {
                     )
 
                     db.loadContacts()
-//                    db.loadChats()
                 }
 
                 Log.i("Current User", "${User.currentUser}")
-//            }
             }
 
             setContentView(R.layout.activity_main)

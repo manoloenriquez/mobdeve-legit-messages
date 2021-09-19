@@ -32,11 +32,9 @@ class SelectGroupActivity : AppCompatActivity() {
             if(selectedUsers.size < 2)
                 Toast.makeText(applicationContext,"Please select more participants", Toast.LENGTH_LONG).show()
             else{
-                // create group chat here
                 db.addChat(selectedUsers)
                 finish()
             }
-
         }
 
         setContentView(binding.root)
