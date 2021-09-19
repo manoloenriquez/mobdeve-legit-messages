@@ -122,6 +122,9 @@ class CanvasActivity : AppCompatActivity(), OnTouchListener, View.OnClickListene
                     MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
                     ContentValues()
                 )
+
+                val chatId = intent.getStringExtra("chatId")
+
                 try {
                     val imageFileOS = contentResolver
                         .openOutputStream(imageFileUri!!)
@@ -130,13 +133,17 @@ class CanvasActivity : AppCompatActivity(), OnTouchListener, View.OnClickListene
                         val msg: ImageMessage? =
                             User.currentUser?.uid?.let { ImageMessage(it, imageFileUri) }
 
-                        msg?.send("lQf81P0aX6KLmHEDmSHC")
+                        if (chatId != null) {
+                            msg?.send(chatId)
+                        }
                     } else {
                         bitmap!!.compress(Bitmap.CompressFormat.JPEG, 90, imageFileOS)
                         val msg: ImageMessage? = User.currentUser?.uid?.let { ImageMessage(it, imageFileUri) }
-                        msg?.send("lQf81P0aX6KLmHEDmSHC")
+                        if (chatId != null) {
+                            msg?.send(chatId)
+                        }
                     }
-                    Toast.makeText(this, "Drawing Saved", Toast.LENGTH_LONG).show()
+                    finish()
 
 
                 } catch (fnfe: FileNotFoundException) {

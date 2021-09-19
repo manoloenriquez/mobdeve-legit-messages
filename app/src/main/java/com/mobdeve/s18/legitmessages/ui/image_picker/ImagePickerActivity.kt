@@ -23,6 +23,8 @@ class ImagePickerActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        val chatId = intent.getStringExtra("chatId")
+
         binding = ActivityImagePickerBinding.inflate(layoutInflater)
 
         binding.camera.setOnClickListener {
@@ -38,7 +40,9 @@ class ImagePickerActivity : AppCompatActivity() {
         }
 
         binding.done.setOnClickListener {
-            msg?.send("lQf81P0aX6KLmHEDmSHC")
+            if (chatId != null) {
+                msg?.send(chatId)
+            }
             finish()
         }
 

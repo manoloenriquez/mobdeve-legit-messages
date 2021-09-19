@@ -71,6 +71,7 @@ class ChatActivity : AppCompatActivity() {
                 when(item.itemId) {
                     R.id.photo_video -> {
                         val intent = Intent(applicationContext, ImagePickerActivity::class.java)
+                        intent.putExtra("chatId", chat_id)
                         startActivity(intent)
                         overridePendingTransition(R.anim.slide_up, R.anim.no_change)
                     }
@@ -87,6 +88,7 @@ class ChatActivity : AppCompatActivity() {
                     }
                     R.id.drawing ->{
                         val intent = Intent(applicationContext, CanvasActivity::class.java)
+                        intent.putExtra("chatId", chat_id)
                         startActivity(intent)
                         overridePendingTransition(R.anim.slide_up, R.anim.no_change)
                     }

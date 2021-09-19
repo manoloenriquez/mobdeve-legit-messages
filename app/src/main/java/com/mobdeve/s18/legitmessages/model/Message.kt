@@ -48,6 +48,7 @@ open class Message {
             meridian = "PM"
         }
 
-        return "$hour:$minute $meridian"
+//        return "$hour:$minute $meridian"
+        return String.format("%d:%02d %s", hour, minute, meridian)
     }
 }
