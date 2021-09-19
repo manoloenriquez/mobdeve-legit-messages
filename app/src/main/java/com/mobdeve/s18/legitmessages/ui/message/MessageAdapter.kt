@@ -1,5 +1,6 @@
 package com.mobdeve.s18.legitmessages.ui.message
 
+import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.speech.tts.TextToSpeech
@@ -19,14 +20,33 @@ import com.mobdeve.s18.legitmessages.model.Message
 import com.mobdeve.s18.legitmessages.model.User
 import com.mobdeve.s18.legitmessages.ui.search_chat.SearchChatActivity
 import com.mobdeve.s18.legitmessages.ui.select_contact.SelectContactActivity
+import org.w3c.dom.Text
 import java.util.*
 import kotlin.collections.ArrayList
 
-class MessageAdapter(private val list: ArrayList<Message>, private var tts: TextToSpeech):
-    RecyclerView.Adapter<MessageAdapter.MessageViewHolder>() {
+class MessageAdapter(private val list: ArrayList<Message>, context: Context):
+    RecyclerView.Adapter<MessageAdapter.MessageViewHolder>(), TextToSpeech.OnInitListener {
 
     final var MSG_TYPE_LEFT = 0
     final var MSG_TYPE_RIGHT = 1
+    lateinit var tts: TextToSpeech
+
+    init {
+        tts = TextToSpeech(context, this)
+    }
+
+    override fun onInit(status: Int) {
+        if(status == TextToSpeech.SUCCESS){
+            Log.i("TTS", "success")
+            val result = tts.setLanguage(Locale.US)
+
+            if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
+                Log.i("TTS", "Language not supported")
+            }
+        } else {
+            Log.i("TTS", "error")
+        }
+    }
 
     class MessageViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
@@ -79,12 +99,7 @@ class MessageAdapter(private val list: ArrayList<Message>, private var tts: Text
                         }
 
                         R.id.text_to_speech -> {
-                            tts = TextToSpeech(v.context, TextToSpeech.OnInitListener { status ->
-                                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-                                    tts.speak(list[position].message, TextToSpeech.QUEUE_FLUSH, null, "")
-                                else
-                                    Toast.makeText(v.context, "ERROR", Toast.LENGTH_SHORT).show()
-                            })
+                            tts.speak(list[position].message, TextToSpeech.QUEUE_FLUSH, null, "")
                         }
                     }
                     true
@@ -110,5 +125,8 @@ class MessageAdapter(private val list: ArrayList<Message>, private var tts: Text
 
     override fun getItemCount() = list.size
 
+    fun playMessage(message: String) {
+        tts.speak(message, TextToSpeech.QUEUE_FLUSH, null, "")
+    }
 }
 

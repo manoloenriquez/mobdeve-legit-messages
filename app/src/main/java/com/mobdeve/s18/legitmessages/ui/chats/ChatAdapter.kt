@@ -1,6 +1,7 @@
 package com.mobdeve.s18.legitmessages.ui.chats
 
 import android.content.Intent
+import android.speech.tts.TextToSpeech
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,7 +12,8 @@ import com.mobdeve.s18.legitmessages.R
 import com.mobdeve.s18.legitmessages.model.Chat
 import com.mobdeve.s18.legitmessages.ui.contacts.ContactActivity
 
-class ChatAdapter(private val list: ArrayList<Chat>): RecyclerView.Adapter<ChatAdapter.ChatViewHolder>() {
+class ChatAdapter(private val list: ArrayList<Chat>):
+    RecyclerView.Adapter<ChatAdapter.ChatViewHolder>() {
 
     class ChatViewHolder(view: View): RecyclerView.ViewHolder(view){
         lateinit var uid: String

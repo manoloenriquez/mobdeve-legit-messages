@@ -47,6 +47,7 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+
         <meta-data
             android:name="firebase_messaging_auto_init_enabled"
             android:value="false" />
@@ -54,5 +55,11 @@
             android:name="firebase_analytics_collection_enabled"
             android:value="false" />
     </application>
+
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.TTS_SERVICE" />
+        </intent>
+    </queries>
 
 </manifest>

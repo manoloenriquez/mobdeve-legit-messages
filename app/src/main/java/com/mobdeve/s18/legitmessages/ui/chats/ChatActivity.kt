@@ -29,7 +29,7 @@ import kotlinx.coroutines.withContext
 import java.util.*
 import kotlin.collections.ArrayList
 
-class ChatActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
+class ChatActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityChatBinding
     private lateinit var messageAdapter: MessageAdapter
@@ -49,8 +49,13 @@ class ChatActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
 
         chat_id = intent.getStringExtra("uid").toString()
         messageList = ArrayList()
-
-        tts = TextToSpeech(this, this)
+//
+//        tts = TextToSpeech(this,) { status ->
+//            Log.i("TTS", "Initialized TTS")
+//            if(status == TextToSpeech.SUCCESS){
+//                val result = tts!!.setLanguage(Locale.US)
+//            }
+//        }
         setAdapter()
 
         binding.chatHeader.text = intent.getStringExtra("chat_displayName")
@@ -123,28 +128,9 @@ class ChatActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
 
     }
 
-//    override private fun onActivityResult()
-
-//    override fun onStart() {
-//        super.onStart()
-//
-//        val db = Database()
-//        val chatId = intent.getStringExtra("uid")
-//        if (chatId != null) {
-//            Log.i("Messages", chatId)
-//        }
-//        CoroutineScope(Dispatchers.Main).launch {
-//            messageList = chatId?.let { db.getMessages(it) }!!
-//            setAdapter()
-//        }
-//    }
-
     fun setAdapter(){
-
-        val tts = TextToSpeech(this){}
-        tts.language = Locale.UK
-
-        messageAdapter = MessageAdapter(messageList ,tts)
+//        messageAdapter = tts?.let { MessageAdapter(messageList , it) }!!
+        messageAdapter = MessageAdapter(messageList, applicationContext)
         binding.rvChat.adapter = messageAdapter
         linearLayoutManager = LinearLayoutManager(applicationContext)
         linearLayoutManager.stackFromEnd
@@ -221,13 +207,6 @@ class ChatActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
                 messageList = messages
                 setAdapter()
             }
-        }
-    }
-
-    override fun onInit(status: Int) {
-
-        if(status == TextToSpeech.SUCCESS){
-            val result = tts!!.setLanguage(Locale.US)
         }
     }
 }
