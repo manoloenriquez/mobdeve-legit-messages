@@ -5,7 +5,7 @@ import java.util.*
 import kotlin.time.hours
 
 open class Message {
-
+    
     var sender: String = ""
     var message: String = ""
     var timeStamp: Timestamp

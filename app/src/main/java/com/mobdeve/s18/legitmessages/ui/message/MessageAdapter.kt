@@ -2,33 +2,35 @@ package com.mobdeve.s18.legitmessages.ui.message
 
 import android.content.Context
 import android.content.Intent
-import android.os.Build
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.net.Uri
 import android.speech.tts.TextToSpeech
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
-import android.widget.PopupMenu
-import android.widget.TextView
-import android.widget.Toast
-import androidx.core.content.ContextCompat.startActivity
+import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
 import com.mobdeve.s18.legitmessages.R
 import com.mobdeve.s18.legitmessages.model.Database
+import com.mobdeve.s18.legitmessages.model.ImageMessage
 import com.mobdeve.s18.legitmessages.model.Message
 import com.mobdeve.s18.legitmessages.model.User
-import com.mobdeve.s18.legitmessages.ui.search_chat.SearchChatActivity
-import com.mobdeve.s18.legitmessages.ui.select_contact.SelectContactActivity
-import org.w3c.dom.Text
+import java.io.IOException
+import java.io.InputStream
+import java.net.HttpURLConnection
+import java.net.URL
 import java.util.*
-import kotlin.collections.ArrayList
+
 
 class MessageAdapter(private val list: ArrayList<Message>, context: Context):
     RecyclerView.Adapter<MessageAdapter.MessageViewHolder>(), TextToSpeech.OnInitListener {
 
     final var MSG_TYPE_LEFT = 0
     final var MSG_TYPE_RIGHT = 1
+    final var IMG_TYPE_LEFT = 2
+    final var IMG_TYPE_RIGHT = 1
     lateinit var tts: TextToSpeech
 
     init {
@@ -52,18 +54,19 @@ class MessageAdapter(private val list: ArrayList<Message>, context: Context):
 
         val message: LinearLayout = view.findViewById(R.id.message_layout)
         val messageBox: TextView = view.findViewById(R.id.show_message)
+        val imageBox: ImageView = view.findViewById(R.id.show_image)
         val timeStamp: TextView = view.findViewById(R.id.time_stamp)
 
         val db = Database()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MessageAdapter.MessageViewHolder {
-        return if(viewType == MSG_TYPE_RIGHT){
+        return if(viewType == MSG_TYPE_RIGHT) {
             val view = LayoutInflater.from(parent.context)
                 .inflate(R.layout.chat_item_right, parent, false)
             MessageAdapter.MessageViewHolder(view)
-
-        } else{
+        }
+        else{
             val view = LayoutInflater.from(parent.context)
                 .inflate(R.layout.chat_item_left, parent, false)
             MessageAdapter.MessageViewHolder(view)
@@ -72,11 +75,16 @@ class MessageAdapter(private val list: ArrayList<Message>, context: Context):
     }
 
     override fun onBindViewHolder(holder: MessageViewHolder, position: Int) {
-        holder.messageBox.text = list[position].message
+
+        if(list[position] is ImageMessage){
+            holder.imageBox.setImageBitmap(getBitmapFromURL((list[position] as ImageMessage).uri))
+        }
+        else{
+            holder.messageBox.text = list[position].message
+        }
+
         holder.timeStamp.text = list[position].timeStampString()
         val db = Database()
-
-
 
         if(list[position].sender == User.currentUser?.uid.toString()){
             holder.message.setOnLongClickListener { v: View ->
@@ -116,17 +124,34 @@ class MessageAdapter(private val list: ArrayList<Message>, context: Context):
     }
 
     override fun getItemViewType(position: Int): Int{
-        if(list[position].sender == User.currentUser?.uid.toString()) {
-            return MSG_TYPE_RIGHT
-        }
-        else
-            return MSG_TYPE_LEFT
+        return if(list[position].sender == User.currentUser?.uid.toString()) {
+            MSG_TYPE_RIGHT
+        } else
+            MSG_TYPE_LEFT
     }
 
     override fun getItemCount() = list.size
 
     fun playMessage(message: String) {
         tts.speak(message, TextToSpeech.QUEUE_FLUSH, null, "")
+    }
+
+    fun getBitmapFromURL(src: Uri): Bitmap? {
+        return try {
+            Log.e("src", src.toString())
+            val url = URL("https://firebasestorage.googleapis.com/v0/b/mobdeve-project.appspot.com/o/lQf81P0aX6KLmHEDmSHC%2F38?alt=media&token=dc7ea032-9937-4ebb-a2ea-c1e9481aa25e")
+            val connection: HttpURLConnection = url.openConnection() as HttpURLConnection
+            connection.doInput = true
+            connection.connect()
+            val input: InputStream = connection.inputStream
+            val myBitmap = BitmapFactory.decodeStream(input)
+            Log.e("Bitmap", "returned")
+            myBitmap
+        } catch (e: IOException) {
+            e.printStackTrace()
+            Log.e("Exception", e.toString())
+            null
+        }
     }
 }
 

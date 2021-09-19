@@ -16,4 +16,5 @@ class ImageMessage(sender: String, val uri: Uri) : Message(sender, "") {
             db.addImageMessage(chatId, instance)
         }
     }
+
 }
