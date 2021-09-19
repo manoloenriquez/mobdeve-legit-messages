@@ -1,45 +1,35 @@
 package com.mobdeve.s18.legitmessages.services
 
-import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
-import android.app.NotificationManager.IMPORTANCE_HIGH
 import android.app.PendingIntent
-import android.app.PendingIntent.FLAG_ONE_SHOT
-import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
-import android.graphics.Color
 import android.media.RingtoneManager
 import android.os.Build
 import android.util.Log
-import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationManagerCompat
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.mobdeve.s18.legitmessages.MainActivity
 import com.mobdeve.s18.legitmessages.R
 import com.mobdeve.s18.legitmessages.ui.chats.ChatActivity
-import okhttp3.internal.Util
-import java.util.*
 
 class FirebaseMessagingService : FirebaseMessagingService() {
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
-        Log.d(TAG, "From: ${remoteMessage.from}")
 
-        if (remoteMessage.data.isNotEmpty()) {
-            Log.d(TAG, "Message data payload: ${remoteMessage.data}")
-
-        }
+        var topic = remoteMessage.from?.substring(8)
 
         remoteMessage.notification?.let {
             Log.d(TAG, "Message Notification Body: ${it.body}")
         }
 
-        remoteMessage.notification?.body?.let { sendNotification(it) }
+        remoteMessage.notification?.body?.let {
+            if (topic != null) {
+                sendNotification(it, topic)
+            }
+        }
     }
     override fun onNewToken(token: String) {
         Log.d(TAG, "Refreshed token: $token")
@@ -55,11 +45,21 @@ class FirebaseMessagingService : FirebaseMessagingService() {
         Log.d(TAG, "sendRegistrationTokenToServer($token)")
     }
 
-    private fun sendNotification(messageBody: String) {
-        val intent = Intent(this, MainActivity::class.java)
+    private fun sendNotification(messageBody: String, topic: String) {
+
+        Log.d("Test", topic)
+        lateinit var intent: Intent
+        if(topic == null)
+            intent = Intent(this, MainActivity::class.java)
+        else{
+            intent = Intent(this, ChatActivity::class.java)
+            intent.putExtra("uid", topic)
+        }
+
+        val uniqueInt = (System.currentTimeMillis() and 0xfffffff).toInt()
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-        val pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
-            PendingIntent.FLAG_ONE_SHOT)
+        val pendingIntent = PendingIntent.getActivity(this, 0, intent,
+            PendingIntent.FLAG_UPDATE_CURRENT)
 
         val channelId = getString(R.string.default_notification_channel_id)
         val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)

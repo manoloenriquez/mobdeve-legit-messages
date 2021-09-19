@@ -1,5 +1,6 @@
 package com.mobdeve.s18.legitmessages.ui.chats
 
+import android.content.ContentValues.TAG
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -15,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.ktx.messaging
 import com.google.firebase.storage.FirebaseStorage
 import com.mobdeve.s18.legitmessages.R
 import com.mobdeve.s18.legitmessages.databinding.FragmentChatsBinding
@@ -80,6 +82,18 @@ class ChatsFragment : Fragment() {
         CoroutineScope(Dispatchers.Main).launch {
             chatAdapter = ChatAdapter(db.getChats())
             binding.chatsRvList.adapter = chatAdapter
+            var chatList = db.getChats()
+            for(i in chatList){
+                Firebase.messaging.subscribeToTopic(i.chatId)
+                    .addOnCompleteListener { task ->
+                        var msg = i.chatId
+                        if (!task.isSuccessful) {
+                            msg = getString(R.string.msg_subscribe_failed)
+                        }
+                        Log.d("Topic", msg)
+                        Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show()
+                    }
+            }
         }
 
     }
