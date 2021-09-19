@@ -20,6 +20,7 @@ class Chat(val chatId: String) {
         }
 
         out.trim()
+        out = out.substring(0, out.length - 2)
 
         return out
     }

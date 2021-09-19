@@ -26,6 +26,7 @@ import com.mobdeve.s18.legitmessages.ui.search_chat.SearchChatActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 import java.lang.Exception
 import java.util.*
@@ -40,7 +41,6 @@ class ChatActivity : AppCompatActivity() {
     private lateinit var chat_id: String
     private var disappear: Boolean = false
     val db = Database()
-    private  var tts: TextToSpeech? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,7 +52,9 @@ class ChatActivity : AppCompatActivity() {
         messageList = ArrayList()
         setAdapter()
 
-        binding.chatHeader.text = intent.getStringExtra("chat_displayName")
+        binding.chatHeader.text = ""
+        getChatDisplayName()
+
 
         binding.attachFile.setOnClickListener {
 
@@ -122,6 +124,29 @@ class ChatActivity : AppCompatActivity() {
         initListener()
         setSupportActionBar(binding.chatToolBar)
 
+    }
+
+    fun getChatDisplayName() {
+        CoroutineScope(Dispatchers.Main).launch {
+            val db = Firebase.firestore
+            val ref = db.collection("chats").document(chat_id)
+            val document = ref.get().await()
+            val data = document.data
+
+            val chat = Chat(
+                document.id
+            )
+
+            (data?.get("participants") as ArrayList<DocumentReference>).forEach { participant ->
+                if (participant.id != User.currentUser?.uid) {
+                    val userDoc = participant.get().await()
+                    val userData = userDoc.data
+                    chat.participants.add((userData?.get("username")) as String)
+                }
+            }
+
+            binding.chatHeader.text = chat.usernamesString()
+        }
     }
 
     fun setAdapter(){
