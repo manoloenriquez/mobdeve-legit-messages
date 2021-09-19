@@ -14,7 +14,9 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.ktx.messaging
 import com.google.firebase.storage.FirebaseStorage
@@ -28,15 +30,16 @@ import com.mobdeve.s18.legitmessages.ui.contacts.ContactAdapter
 import com.mobdeve.s18.legitmessages.ui.create_group.SelectGroupActivity
 import com.mobdeve.s18.legitmessages.ui.search_contact.SearchUserActivity
 import com.mobdeve.s18.legitmessages.ui.select_contact.SelectContactActivity
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
+import kotlinx.coroutines.tasks.await
 
 class ChatsFragment : Fragment() {
 
     private lateinit var binding: FragmentChatsBinding
     private lateinit var chatAdapter: ChatAdapter
     private lateinit var linearLayoutManager: LinearLayoutManager
+
+    private val chats: ArrayList<Chat> = ArrayList()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
@@ -45,6 +48,11 @@ class ChatsFragment : Fragment() {
         binding = FragmentChatsBinding.inflate(layoutInflater)
         linearLayoutManager = LinearLayoutManager(activity)
         binding.chatsRvList.layoutManager = linearLayoutManager
+
+        chatAdapter = ChatAdapter(chats)
+        binding.chatsRvList.adapter = chatAdapter
+
+        initChatListener()
 
         binding.seachUser.setOnClickListener {
 
@@ -79,8 +87,8 @@ class ChatsFragment : Fragment() {
         val db = Database()
 
         CoroutineScope(Dispatchers.Main).launch {
-            chatAdapter = ChatAdapter(db.getChats())
-            binding.chatsRvList.adapter = chatAdapter
+//            chatAdapter = ChatAdapter(db.getChats())
+//            binding.chatsRvList.adapter = chatAdapter
             var chatList = db.getChats()
             for(i in chatList){
                 Firebase.messaging.subscribeToTopic(i.chatId)
@@ -94,5 +102,58 @@ class ChatsFragment : Fragment() {
             }
         }
 
+    }
+
+    fun initChatListener() {
+        val db = Firebase.firestore
+
+        val currentUid: String? = User.currentUser!!.uid
+//        val chats = ArrayList<Chat>()
+        val userRef: DocumentReference? = currentUid?.let { db.collection("users").document(it) }
+        val receivers = hashMapOf<String, String>()
+
+        if (userRef != null) {
+            val chatsRef = db.collection("chats")
+                .whereArrayContains("participants", userRef)
+                .limit(100)
+//                .get()
+//                .await()
+
+            chatsRef.addSnapshotListener { snapshot, error ->
+                CoroutineScope(Dispatchers.Main).launch {
+                    snapshot?.documents?.forEach { document ->
+
+                            val data = document.data
+                            val chat = Chat(document.id)
+                            Log.i("Chat id", chat.chatId)
+
+                            (data?.get("participants") as ArrayList<DocumentReference>).forEach { userRef ->
+                                withContext(CoroutineScope(Dispatchers.Main).coroutineContext) {
+                                    if (receivers.get(userRef.id) != null) {
+                                        chat.participants.add(receivers.get(userRef.id)!!)
+                                    } else if (userRef.id != currentUid) {
+                                        val user = userRef.get().await()
+                                        val username: String = user.data?.get("username") as String
+                                        receivers.put(userRef.id, username)
+
+                                        chat.participants.add(receivers.get(userRef.id)!!)
+                                    }
+                                }
+                            }
+
+                            chat.label = chat.usernamesString()
+                            Log.d("Chats", chat.label)
+                            chats.add(chat)
+
+                        }
+//                    chatAdapter = ChatAdapter(chats)
+//                    binding.chatsRvList.adapter = chatAdapter
+
+                    chatAdapter.notifyDataSetChanged()
+                    Log.d("Chats", "$chats")
+                }
+            }
+
+        }
     }
 }
