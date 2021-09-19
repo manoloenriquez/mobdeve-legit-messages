@@ -27,7 +27,7 @@
             android:layout_weight="3"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:weightSum="2">
+            android:weightSum="1">
 
             <TextView
                 android:id="@+id/chat_username"
@@ -36,25 +36,10 @@
                 android:layout_weight="1"
                 android:text="Name"
                 android:textColor="@color/black"
-                android:gravity="top"/>
+                android:gravity="center_vertical"/>
 
-            <TextView
-                android:id="@+id/chat_last_message"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:text="Last Message..."
-                android:textColor="@color/black"
-                android:gravity="bottom"/>
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/chat_date"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:text="Date"
-            android:layout_weight="1"
-            android:textColor="@color/black"/>
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 

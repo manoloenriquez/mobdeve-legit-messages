@@ -1,6 +1,7 @@
 package com.mobdeve.s18.legitmessages.ui.chats
 
 import android.content.Intent
+import android.speech.tts.TextToSpeech
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,10 +9,11 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.mobdeve.s18.legitmessages.R
-import com.mobdeve.s18.legitmessages.model.User
+import com.mobdeve.s18.legitmessages.model.Chat
 import com.mobdeve.s18.legitmessages.ui.contacts.ContactActivity
 
-class ChatAdapter(private val list: ArrayList<User>): RecyclerView.Adapter<ChatAdapter.ChatViewHolder>() {
+class ChatAdapter(private val list: ArrayList<Chat>):
+    RecyclerView.Adapter<ChatAdapter.ChatViewHolder>() {
 
     class ChatViewHolder(view: View): RecyclerView.ViewHolder(view){
         lateinit var uid: String
@@ -41,9 +43,9 @@ class ChatAdapter(private val list: ArrayList<User>): RecyclerView.Adapter<ChatA
     }
 
     override fun onBindViewHolder(holder: ChatAdapter.ChatViewHolder, position: Int) {
-        holder.username.text = list[position].displayName
-        holder.chat_username = list[position].username
-        holder.uid = list[position].uid.toString()
+        holder.username.text = list[position].label
+        holder.chat_username = list[position].label
+        holder.uid = list[position].chatId
     }
 
     override fun getItemCount() = list.size

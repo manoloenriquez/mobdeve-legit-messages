@@ -1,23 +1,27 @@
 package com.mobdeve.s18.legitmessages.model
 
-class Chat {
+class Chat(val chatId: String) {
 
-    var sender: String = ""
-    var receiver: String = ""
-    var message: String = ""
-    var timeStamp: String = ""
+    var lastMessage: String = ""
+    var lastDate: String = ""
+    var label: String = ""
+    val participants: ArrayList<String> = ArrayList()
+    lateinit var messages: ArrayList<Message>
 
-    constructor(sender: String, receiver: String, message: String, timeStamp: String) {
-        this.sender = sender
-        this.receiver = receiver
-        this.message = message
-        this.timeStamp = timeStamp
+    init {
+        this.chatId
     }
 
-    constructor(message: String, timeStamp: String) {
-        this.message = message
-        this.timeStamp = timeStamp
+    fun usernamesString(): String {
+        var out = ""
+
+        participants.forEach { username ->
+            out += "$username, "
+        }
+
+        out.trim()
+        out = out.substring(0, out.length - 2)
+
+        return out
     }
-
-
 }

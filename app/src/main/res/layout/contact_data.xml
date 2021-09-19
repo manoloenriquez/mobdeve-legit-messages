@@ -24,7 +24,7 @@
             android:layout_weight="1"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_baseline_person_24" />
+            android:src="@drawable/ic_baseline_person_24" />
 
         <TextView
             android:id="@+id/contact_display_name"

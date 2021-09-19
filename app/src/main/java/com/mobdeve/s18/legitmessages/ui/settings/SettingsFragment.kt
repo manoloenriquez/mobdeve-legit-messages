@@ -18,6 +18,7 @@ import com.mobdeve.s18.legitmessages.R
 import com.mobdeve.s18.legitmessages.databinding.FragmentSettingsBinding
 import com.mobdeve.s18.legitmessages.model.User
 import com.mobdeve.s18.legitmessages.ui.login.LoginActivity
+import java.lang.RuntimeException
 
 class SettingsFragment : Fragment() {
 
@@ -42,6 +43,10 @@ class SettingsFragment : Fragment() {
             Firebase.auth.signOut()
             val intent = Intent(it.context, LoginActivity::class.java)
             startActivity(intent)
+        }
+
+        binding.crash.setOnClickListener {
+            throw RuntimeException("Test Crash")
         }
 
         binding.firstName.setText(User.currentUser?.firstName)

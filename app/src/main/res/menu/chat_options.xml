@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/photo_video"
+        android:title="Photo or Video"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/drawing"
+        android:title="Drawing"
+        app:showAsAction="never"/>
+
+    <item android:id="@+id/disappear"
+        android:title="Disappearing Message"
+        app:actionViewClass="android.widget.ToggleButton"
+        android:orderInCategory="80"
+        app:showAsAction="never" />
+
+</menu>

@@ -40,37 +40,8 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val db = Database()
 
         if (auth.currentUser != null) {
-//            User.currentUser = User(
-//                auth.currentUser!!.uid,
-//                auth.currentUser!!.email,
-//                auth.currentUser!!.displayName
-//            )
-//            val intent = Intent(this, MainActivity::class.java)
-//            setResult(Activity.RESULT_OK)
-//            startActivity(intent)
-//            finish()
-
-            CoroutineScope(Main).launch {
-                val userRef = db.getUser(auth.currentUser!!.uid)
-                val data = userRef.data
-
-                if (data != null) {
-                    User.currentUser = User(
-                        auth.currentUser!!.uid,
-                        auth.currentUser!!.email,
-                        auth.currentUser!!.displayName,
-                        data["firstName"] as String,
-                        data["lastName"] as String,
-                        data["username"] as String
-                    )
-                }
-
-                Log.i("Current User", "${User.currentUser}")
-            }
-
             val intent = Intent(this, MainActivity::class.java)
             setResult(Activity.RESULT_OK)
             startActivity(intent)
