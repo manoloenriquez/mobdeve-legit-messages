@@ -90,7 +90,7 @@ class MessageAdapter(private val list: ArrayList<Message>, context: Context):
         holder.timeStamp.text = list[position].timeStampString()
         val db = Database()
 
-        if(list[position].sender == User.currentUser?.uid.toString()){
+        if(list[position].sender == User.currentUser?.uid.toString() && list[position] !is ImageMessage){
             holder.message.setOnLongClickListener { v: View ->
                 val popup = PopupMenu(v.context, holder.message)
                 popup.menuInflater.inflate(R.menu.chat_menu, popup.menu)
@@ -119,7 +119,40 @@ class MessageAdapter(private val list: ArrayList<Message>, context: Context):
                 popup.show()
                 true
             }
-        } else {
+        }
+        else if(list[position].sender != User.currentUser?.uid.toString() && list[position] !is ImageMessage){
+            holder.message.setOnLongClickListener { v: View ->
+                val popup = PopupMenu(v.context, holder.message)
+                popup.menuInflater.inflate(R.menu.sent_options, popup.menu)
+                popup.setOnMenuItemClickListener(PopupMenu.OnMenuItemClickListener { item ->
+                    when(item.itemId) {
+                        R.id.text_to_speech -> {
+                            tts.speak(list[position].message, TextToSpeech.QUEUE_FLUSH, null, "")
+                        }
+                    }
+                    true
+                })
+                popup.show()
+                true
+            }
+        }
+        else if(list[position].sender == User.currentUser?.uid.toString() && list[position] is ImageMessage){
+            holder.message.setOnLongClickListener { v: View ->
+                val popup = PopupMenu(v.context, holder.message)
+                popup.menuInflater.inflate(R.menu.image_options, popup.menu)
+                popup.setOnMenuItemClickListener(PopupMenu.OnMenuItemClickListener { item ->
+                    when(item.itemId) {
+                        R.id.delete_message -> {
+                            db.deleteMessage(list[position].chatId, list[position].id)
+                        }
+                    }
+                    true
+                })
+                popup.show()
+                true
+            }
+        }
+        else {
             holder.message.setOnLongClickListener { v ->
                 Toast.makeText(v.context, "You can't modify this message.", Toast.LENGTH_SHORT).show()
                 true
