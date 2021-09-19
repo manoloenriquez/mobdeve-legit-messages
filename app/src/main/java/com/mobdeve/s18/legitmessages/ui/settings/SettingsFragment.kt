@@ -33,10 +33,6 @@ class SettingsFragment : Fragment() {
                 ViewModelProvider(this).get(SettingsViewModel::class.java)
         val binding = FragmentSettingsBinding.inflate(layoutInflater)
 
-        binding.saveChanges.setOnClickListener {
-            Toast.makeText(it.context, "Save changes", Toast.LENGTH_SHORT).show()
-        }
-
         binding.logout.setOnClickListener {
             Toast.makeText(it.context, "Logged out!", Toast.LENGTH_SHORT).show()
             Log.i("Settings", "Logged out!")

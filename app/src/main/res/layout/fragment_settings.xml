@@ -92,23 +92,23 @@
             android:orientation="horizontal"
             android:weightSum="2">
 
-            <EditText
+            <TextView
                 android:id="@+id/first_name"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="match_parent"
                 android:height="50dp">
 
-            </EditText>
+            </TextView>
 
-            <EditText
+            <TextView
                 android:id="@+id/last_name"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:height="50dp">
 
-            </EditText>
+            </TextView>
 
         </LinearLayout>
         <LinearLayout
@@ -130,26 +130,14 @@
 
             </TextView>
 
-            <EditText
+            <TextView
                 android:id="@+id/username"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:height="50dp">
 
-            </EditText>
+            </TextView>
         </LinearLayout>
-
-        <Button
-            android:id="@+id/save_changes"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="36dp"
-            android:text="SAVE CHANGES"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/input_container"
-            app:layout_goneMarginTop="30dp" />
 
         <Button
             android:id="@+id/logout"
