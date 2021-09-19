@@ -5,6 +5,7 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
+import android.os.AsyncTask
 import android.speech.tts.TextToSpeech
 import android.util.Log
 import android.view.LayoutInflater
@@ -17,6 +18,7 @@ import com.mobdeve.s18.legitmessages.model.Database
 import com.mobdeve.s18.legitmessages.model.ImageMessage
 import com.mobdeve.s18.legitmessages.model.Message
 import com.mobdeve.s18.legitmessages.model.User
+import com.squareup.picasso.Picasso
 import java.io.IOException
 import java.io.InputStream
 import java.net.HttpURLConnection
@@ -77,7 +79,10 @@ class MessageAdapter(private val list: ArrayList<Message>, context: Context):
     override fun onBindViewHolder(holder: MessageViewHolder, position: Int) {
 
         if(list[position] is ImageMessage){
-            holder.imageBox.setImageBitmap(getBitmapFromURL((list[position] as ImageMessage).uri))
+//            holder.imageBox.setImageBitmap(getBitmapFromURL((list[position] as ImageMessage).uri))
+            Picasso.get().load((list[position] as ImageMessage).uri).into(holder.imageBox)
+            holder.imageBox.visibility = View.VISIBLE
+            holder.messageBox.visibility = View.GONE
         }
         else{
             holder.messageBox.text = list[position].message
@@ -153,5 +158,6 @@ class MessageAdapter(private val list: ArrayList<Message>, context: Context):
             null
         }
     }
+
 }
 
